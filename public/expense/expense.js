@@ -7,6 +7,7 @@ const membershipBtn = document.getElementById('buy_membership')
 window.addEventListener('DOMContentLoaded', () => {
     getProfile();
     getAllExpenses();
+    checkPremium()
 });
 
 form.addEventListener('submit', async (e) => {
@@ -40,10 +41,10 @@ form.addEventListener('submit', async (e) => {
 
         alert("Expense has been added successfully");
 
-        // ✅ Re-fetch all expenses
+        //  Re-fetch all expenses
         getAllExpenses();
 
-        // ✅ Reset form only after success
+        // Reset form only after success
         form.reset();
 
     } catch (error) {
@@ -89,7 +90,7 @@ async function getAllExpenses() {
             return;
         }
 
-        // ✅ Clear table body before inserting
+        // Clear table body before inserting
         tableBody.innerHTML = '';
 
         data.forEach((item) => {
@@ -126,7 +127,7 @@ async function deleteExpense(id) {
             return;
         }
 
-        // ✅ Remove from DOM
+        // Remove from DOM
         const row = document.getElementById(`expense-${id}`);
         if (row) {
             row.remove();
@@ -145,4 +146,27 @@ membershipBtn.addEventListener('click', () => {
     window.location.href = '/payment';
 });
 
+const premiumTag = document.getElementById('premium-tag');
 
+async function checkPremium() {
+    try {
+        const response = await fetch("http://localhost:5000/user/check-premium", {
+            method: "GET",
+            credentials: "include"
+        });
+
+        const data = await response.json();
+        console.log("checkPremium response:", data);
+
+        if (data.message === "You are a premium user.") {
+            premiumTag.textContent = "Premium Member";
+            membershipBtn.style.display = "none"
+        } else {
+            premiumTag.textContent = "";
+            premiumTag.style.display = "none";
+        }
+
+    } catch (error) {
+        console.log("Error in checkPremium function:", error.message);
+    }
+}

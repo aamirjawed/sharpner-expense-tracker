@@ -100,8 +100,17 @@ const myProfile = async (req, res) => {
 }
 
 
-const getAllUsers = async (req, res) => {
-  console.log("you are a premium member")
+const premiumOrNot = async(req, res) => {
+  
+      if(req.isPremium === "Yes"){
+        return res.json({
+          isPremium:true,
+          message:"You are a premium user."
+        })
+      }else{
+        return res.json({isPremium:true,message:"You are a free user."})
+      }
+  
 }
 
-module.exports = {sendLoginHTML, sendSignupHTML, userSignup, userLogin, myProfile, getAllUsers}
+module.exports = {sendLoginHTML, sendSignupHTML, userSignup, userLogin, myProfile, premiumOrNot}

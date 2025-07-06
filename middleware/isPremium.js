@@ -1,24 +1,25 @@
-const Payment = require("../model/paymentModel")
+const User = require('../model/userModel')
 
 
-const isPremium = async (req, res, next) => {
+const checkPremium = async (req, res, next) => {
     try {
-        const userId = req.userId
-
-        const paidOrder = await Payment.findOne({
-            where:{
-                paymentStatus:"Success",
-                customerId : userId
-            }
+        const user = await User.findByPk(req.userId, {
+            attributes:["isPremium"]
         })
 
-        req.userId.isPremium = !!paidOrder
-        next()
+        if(!user){
+            console.log("User not found in premium check")
+            req.isPremium = "No"
+            return next();
+        }
+
+        req.isPremium = user.isPremium
+        return next()
     } catch (error) {
-        console.error("Error checking premium status:", error);
-    return res.status(500).json({ message: "Server error" });
+        console.error("Error in checkPremium middleware:", error.message);
+    req.isPremium = "No";
+    return next();
     }
 }
 
-
-module.exports = isPremium
+module.exports = checkPremium

@@ -247,6 +247,21 @@ body {
   transform: translateY(-1px);
 }
 
+#premium-tag{
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background-color: #10b981;
+  color: #ffffff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .expense-body {
