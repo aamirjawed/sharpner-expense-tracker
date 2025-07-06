@@ -55,6 +55,7 @@ exports.getPaymentStatus = async (orderId) => {
 
     let getOrderResponse = response.data;
     let orderStatus;
+    let isPremium;
 
     if (
       getOrderResponse.filter(
@@ -62,6 +63,8 @@ exports.getPaymentStatus = async (orderId) => {
       ).length > 0
     ) {
       orderStatus = "Success";
+      
+
     } else if (
       getOrderResponse.filter(
         (transaction) => transaction.payment_status === "PENDING"

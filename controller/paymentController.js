@@ -1,6 +1,7 @@
 const path = require('path');
 const { createOrder, getPaymentStatus: fetchPaymentStatus} = require('../services/cashfreeService');
 const Payment = require('../model/paymentModel');
+const User = require('../model/userModel');
 
 // Serve Payment Page
 exports.getPaymentPage = (req, res) => {
@@ -49,6 +50,7 @@ exports.getPaymentStatus = async (req, res) => {
 
   try {
     const order = await Payment.findOne({ where: { orderId } });
+    const user = await User.findByPk(req.userId) // getting user id so i can change isPremium
 
     if (!order) {
       return res.status(404).json({ message: "Payment record not found" });
@@ -59,6 +61,14 @@ exports.getPaymentStatus = async (req, res) => {
     console.log("Cashfree status for", orderId, "=>", orderStatus);
 
     order.paymentStatus = orderStatus;
+
+   if (orderStatus === "Success" && user.isPremium !== "Yes") {
+    user.isPremium = "Yes";    
+    await user.save();          
+  }
+
+    
+
     await order.save();
 
     return res.status(200).json({ orderId, status: orderStatus });
