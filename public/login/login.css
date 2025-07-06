@@ -1,0 +1,277 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+  color: #333;
+  min-height: 100vh;
+}
+
+/* Container */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  position: relative;
+}
+
+/* Title */
+.form-title {
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+
+/* Buy Membership Button */
+#buy_membership {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background-color: #10b981;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#buy_membership:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+/* Tagline */
+.form-container > p {
+  margin-top: 5.5rem;
+  font-size: 1.1rem;
+  color: #4a4a4a;
+  font-weight: 500;
+  text-align: center;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* Main Content */
+.main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Login Image */
+.login-img {
+  width: 450px;
+  max-width: 100%;
+  height: auto;
+ 
+}
+
+
+
+/* Feature List */
+.main-container ul {
+  margin-top: 1.5rem;
+  padding-left: 1rem;
+  list-style: none;
+  color: #333;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.main-container ul li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.main-container ul li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #00b894;
+  font-weight: bold;
+}
+
+/* Login Form */
+.login-form {
+  background-color: #ffffff;
+  padding: 2rem;
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.login-form h1 {
+  text-align: center;
+  color: #444;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+/* Subheading inside form */
+.login-form p {
+  font-size: 0.95rem;
+  color: #777;
+  margin: -0.5rem 0 1rem 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.form-group input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #6a11cb;
+  outline: none;
+}
+
+/* Submit Button */
+.form-group button {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.form-group button:hover {
+  background: linear-gradient(to right, #0072ff, #0047b3);
+  cursor: pointer;
+}
+
+/* Sign up link */
+.login-form a {
+  color: #4a00e0;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-form a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .login-img {
+    width: 350px;
+  }
+
+  .form-title {
+    font-size: 2rem;
+    left: 1rem;
+  }
+
+  #buy_membership {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+
+  .login-img {
+    width: 300px;
+  }
+
+  .login-form {
+    width: 90%;
+    max-width: 350px;
+  }
+
+  .form-title {
+    font-size: 1.8rem;
+    left: 1rem;
+  }
+
+  .form-container > p {
+    margin-top: 6rem;
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-title {
+    font-size: 1.5rem;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+
+  #buy_membership {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .login-img {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .login-form {
+    padding: 1rem;
+  }
+
+  .form-container > p {
+    font-size: 0.95rem;
+    padding: 0 0.5rem;
+  }
+
+  .main-container ul {
+    font-size: 0.9rem;
+    padding-left: 0.5rem;
+  }
+}

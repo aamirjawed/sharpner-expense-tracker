@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="/expense/expense.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="expense-container">
+      <!-- Header -->
+      <header class="page-header">
+        <h1 class="expense-heading">
+          <i class="fa-solid fa-wallet"></i> Expense Tracker
+        </h1>
+        <button id="buy_membership">
+          <i class="fa-solid fa-crown"></i> Buy Membership
+        </button>
+      </header>
+
+      <h2 class="username">
+        Welcome, <span id="username">Loading...</span>!
+      </h2>
+
+      <!-- Body -->
+      <div class="expense-body">
+        <!-- Form Section -->
+        <form class="expense-form" id="form">
+          <h1 class="heading">
+            <i class="fa-solid fa-plus-circle"></i> Add Expense
+          </h1>
+
+          <div class="form-group">
+            <label for="amount"><i class="fa-solid fa-indian-rupee-sign"></i> Amount:</label>
+            <input type="number" id="amount" name="amount" placeholder="e.g., 1500" />
+          </div>
+
+          <div class="form-group">
+            <label for="description"><i class="fa-solid fa-align-left"></i> Description:</label>
+            <input type="text" id="description" name="description" placeholder="e.g., Grocery shopping" />
+          </div>
+
+          <div class="form-group">
+            <label for="category"><i class="fa-solid fa-list-ul"></i> Select Category:</label>
+            <select id="category">
+              <option>Rent</option>
+              <option>Food</option>
+              <option>Groceries</option>
+              <option>Electricity Bill</option>
+              <option>Maid</option>
+              <option>Movie</option>
+            </select>
+          </div>
+
+          <button type="submit">
+            <i class="fa-solid fa-circle-plus"></i> Add Expense
+          </button>
+        </form>
+
+        <!-- Table Section -->
+        <div class="expense-table-wrapper">
+          <h2 style="margin-bottom: 1rem; color: #1e293b;">
+            <i class="fa-solid fa-table-list"></i> Expense History
+          </h2>
+          <table id="expense-table" class="expense-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="expense-table-body">
+              <!-- Dynamic rows go here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="/expense/expense.js"></script>
+  
+  </body>
+</html>

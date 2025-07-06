@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup | Expense Tracker</title>
+  <link rel="stylesheet" href="/signup/signup.css" />
+      <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+</head>
+<body>
+
+  <div class="form-container" id="form">
+    <h1 class="form-title">Expense Tracker</h1>
+     <button id="buy_membership">
+          <i class="fa-solid fa-crown"></i> Buy Membership
+        </button>
+      </header>
+
+    <!-- Tagline -->
+    <p style="margin-top: 0rem; font-size: 1.1rem; color: #4a4a4a; font-weight: 500; text-align: center;">
+      Create your account to start tracking your income and expenses with ease.
+    </p>
+
+    <div class="main-container">
+      <!-- Image & Features -->
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <img src="/assests/login-image.png" class="login-img" alt="Signup Visual" />
+        <ul style="margin-top: 1rem; padding: 0 1rem; list-style: none; color: #333; font-size: 0.95rem;">
+          <li>💡 Track daily spending</li>
+          <li>📊 Get monthly reports</li>
+          <li>🔒 Secure & private</li>
+        </ul>
+      </div>
+
+      <!-- Signup Form -->
+      <form class="signup-form">
+        <h1>Signup</h1>
+
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" placeholder="Create a password" />
+        </div>
+
+        <div class="form-group">
+          <button type="submit">Sign Up</button>
+          <p>Already have an account? <a href="/login.html">Login</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/signup/signup.js"></script>
+</body>
+</html>
