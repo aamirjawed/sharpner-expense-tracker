@@ -7,7 +7,9 @@ const membershipBtn = document.getElementById('buy_membership')
 window.addEventListener('DOMContentLoaded', () => {
     getProfile();
     getAllExpenses();
-    checkPremium()
+    checkPremium();
+    showLeaderBoardBtn()
+    userLeaderBoard()
 });
 
 form.addEventListener('submit', async (e) => {
@@ -158,7 +160,7 @@ async function checkPremium() {
         const data = await response.json();
         console.log("checkPremium response:", data);
 
-        if (data.message === "You are a premium user.") {
+        if (data.message === "yes") {
             premiumTag.textContent = "Premium Member";
             membershipBtn.style.display = "none"
         } else {
@@ -170,3 +172,81 @@ async function checkPremium() {
         console.log("Error in checkPremium function:", error.message);
     }
 }
+
+
+// fetch leaderboard for premium user
+
+const leaderBoardBody = document.getElementById('leaderboard-body');
+const leaderBoardTable = document.getElementById('leaderboard-table');
+const leaderBoardBtn = document.querySelector('.leaderboard-btn');
+const leaderBoardFloating = document.getElementById('leaderboard-floating'); // ✅ NEW
+
+// Hide the floating leaderboard initially
+leaderBoardFloating.classList.add('hidden');
+
+async function showLeaderBoardBtn() {
+  try {
+    const response = await fetch("http://localhost:5000/user/check-premium", {
+      method: "GET",
+      credentials: "include"
+    });
+
+    const data = await response.json();
+
+    if (data.message !== "yes") {
+      leaderBoardBtn.style.display = 'none';
+    }
+  } catch (error) {
+    console.error("Error checking premium status", error);
+  }
+}
+
+async function userLeaderBoard() {
+  try {
+    const response = await fetch('http://localhost:5000/user/all-users', {
+      method: "GET",
+      credentials: 'include'
+    });
+
+    if (response.status === 403) {
+      alert("Access denied. Only premium users can view the leaderboard.");
+      return;
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(errorData.message || "Server error while fetching leaderboard.");
+      return;
+    }
+
+    const data = await response.json();
+    leaderBoardBody.innerHTML = '';
+
+    data.forEach((item) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.total_expense}</td>
+      `;
+      leaderBoardBody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    alert("Something went wrong while fetching the leaderboard.");
+  }
+}
+
+// ✅ Toggle the floating wrapper
+leaderBoardBtn.addEventListener('click', async () => {
+  const isHidden = leaderBoardFloating.classList.contains('hidden');
+
+  if (isHidden) {
+    leaderBoardFloating.classList.remove('hidden');
+    leaderBoardBtn.textContent = 'Hide Leaderboard';
+    await userLeaderBoard();
+  } else {
+    leaderBoardFloating.classList.add('hidden');
+    leaderBoardBtn.textContent = 'Show Leaderboard';
+  }
+});

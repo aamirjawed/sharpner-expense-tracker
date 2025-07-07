@@ -23,9 +23,29 @@
       </header>
 
       <h2 class="username">
-        Welcome, <span id="username">Loading...</span>!  
+        Welcome, <span id="username">Loading...</span>!
       </h2>
       <p id="premium-tag"></p>
+<div class="leaderboard-wrapper">
+  <button class="leaderboard-btn">
+    <i class="fa-solid fa-trophy"></i> Show Leaderboard
+  </button>
+
+  <div class="leaderboard-floating hidden" id="leaderboard-floating">
+    <table class="leaderboard-table" id="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Total Expense</th>
+        </tr>
+      </thead>
+      <tbody class="leaderboard-body" id="leaderboard-body">
+        <!-- Dynamic rows go here -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
       <!-- Body -->
       <div class="expense-body">
@@ -36,17 +56,23 @@
           </h1>
 
           <div class="form-group">
-            <label for="amount"><i class="fa-solid fa-indian-rupee-sign"></i> Amount:</label>
+            <label for="amount">
+              <i class="fa-solid fa-indian-rupee-sign"></i> Amount:
+            </label>
             <input type="number" id="amount" name="amount" placeholder="e.g., 1500" />
           </div>
 
           <div class="form-group">
-            <label for="description"><i class="fa-solid fa-align-left"></i> Description:</label>
+            <label for="description">
+              <i class="fa-solid fa-align-left"></i> Description:
+            </label>
             <input type="text" id="description" name="description" placeholder="e.g., Grocery shopping" />
           </div>
 
           <div class="form-group">
-            <label for="category"><i class="fa-solid fa-list-ul"></i> Select Category:</label>
+            <label for="category">
+              <i class="fa-solid fa-list-ul"></i> Select Category:
+            </label>
             <select id="category">
               <option>Rent</option>
               <option>Food</option>
@@ -85,6 +111,5 @@
     </div>
 
     <script src="/expense/expense.js"></script>
-  
   </body>
 </html>

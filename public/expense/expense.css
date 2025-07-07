@@ -262,6 +262,8 @@ body {
   gap: 0.4rem;
 }
 
+
+
 /* Responsive */
 @media (max-width: 900px) {
   .expense-body {
@@ -289,3 +291,80 @@ body {
     display: block;
   }
 }
+
+
+/* Floating leaderboard container */
+#leaderboard-floating {
+  position: fixed; /* Float above */
+  top: 6rem;
+  right: 2rem;
+  z-index: 999; /* Make sure it's on top */
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Leaderboard table inside floating card */
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.leaderboard-table th {
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* Leaderboard button (stay inline under welcome) */
+.leaderboard-btn {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background-color: #6366f1;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1rem;
+}
+
+.leaderboard-btn:hover {
+  background-color: #4f46e5;
+  transform: translateY(-1px);
+}
+
+/* Hidden class */
+.hidden {
+  display: none;
+}
+
+/* Responsive fix for smaller screens */
+@media (max-width: 600px) {
+  #leaderboard-floating {
+    top: auto;
+    bottom: 2rem;
+    right: 50%;
+    transform: translateX(50%);
+    width: 90%;
+  }
+}
+

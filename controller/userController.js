@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { resolveSoa } = require('dns')
 const { readdirSync } = require('fs')
+const Expense = require('../model/expenseModel')
 
 
 const sendLoginHTML = (req, res) => {
@@ -104,13 +105,15 @@ const premiumOrNot = async(req, res) => {
   
       if(req.isPremium === "Yes"){
         return res.json({
-          isPremium:true,
-          message:"You are a premium user."
+          
+          message:"yes" 
         })
       }else{
-        return res.json({isPremium:true,message:"You are a free user."})
+        return res.json({message:"no"})
       }
   
 }
+
+
 
 module.exports = {sendLoginHTML, sendSignupHTML, userSignup, userLogin, myProfile, premiumOrNot}
