@@ -1,5 +1,6 @@
 const path = require('path')
 const Expense = require('../model/expenseModel')
+const User = require('../model/userModel')
 // const jwt = require('jsonwebtoken')
 // const User = require('../model/userModel')
 // const { error } = require('console')
@@ -18,9 +19,20 @@ const addExpense = async (req, res) => {
             amount: amount, description: description, category: category, userId: req.userId
         })
 
+
+
         if (!expense) {
             return res.status(400).json({ message: "Error adding expense" })
         }
+
+        const user = await User.findByPk(req.userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        user.totalExpense += amount;
+        await user.save();
 
         res.status(201).json({ expense })
     } catch (error) {

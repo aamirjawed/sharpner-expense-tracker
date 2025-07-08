@@ -7,27 +7,19 @@ const getUserLeaderboard  = async (req, res) => {
   try {
 
     const users = await User.findAll({
-      attributes:["id","name" ]
+      attributes:["id","name" , "totalExpense"]
     });
 
-    const userAggregatedExpenses = await Expense.findAll({
-      attributes:["userId", [sequelize.fn('sum', sequelize.col('amount')), "total_expense"]],
-      group:["userId"]
-    });
+    console.log(users)
 
-    const expenses = {}
-
-    userAggregatedExpenses.forEach(exp => {
-        expenses[exp.userId]  = parseFloat(exp.get("total_expense"))
-    })
 
     var userLeaderboardDetails = []
 
     users.forEach((user) => {
-        userLeaderboardDetails.push({name:user.name, total_expense:expenses[user.id] || 0})
+        userLeaderboardDetails.push({name:user.name, total_expense:user.totalExpense || 0})
     })
 
-    console.log(userLeaderboardDetails)
+    // console.log(userLeaderboardDetails)
     userLeaderboardDetails.sort((a,b) => b.total_expense - a.total_expense)
     res.status(200).json(userLeaderboardDetails)
     
