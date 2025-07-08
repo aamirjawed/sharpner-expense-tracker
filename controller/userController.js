@@ -4,6 +4,7 @@ const User  = require('../model/userModel')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Expense = require('../model/expenseModel')
+const sendEmail = require('../services/node-mail')
 
 
 const sendLoginHTML = (req, res) => {
@@ -117,5 +118,40 @@ const premiumOrNot = async(req, res) => {
 }
 
 
+// forgot password
 
-module.exports = {sendLoginHTML, sendSignupHTML, userSignup, userLogin, myProfile, premiumOrNot}
+const forgotPasswordPage = (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/forgotpassword.html'))
+}
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    if (!email || typeof email !== 'string') {
+      return res.status(400).json({ message: 'Invalid email address' });
+    }
+
+    
+    const normalizedEmail = email.trim().toLowerCase();
+
+    
+    const user = await User.findOne({ where: { email: normalizedEmail } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Assuming sendEmail is your function to email the reset link
+    await sendEmail(normalizedEmail);
+
+    return res.status(200).json({ message: 'Reset link sent successfully' });
+  } catch (error) {
+    console.error('Error in forgot password:', error.message);
+    return res.status(500).json({ message: 'Error in sending reset link' });
+  }
+};
+
+
+
+module.exports = {sendLoginHTML, sendSignupHTML, userSignup, userLogin, myProfile, premiumOrNot, forgotPasswordPage, forgotPassword}
