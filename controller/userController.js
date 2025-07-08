@@ -3,8 +3,6 @@ const path = require('path')
 const User  = require('../model/userModel')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { resolveSoa } = require('dns')
-const { readdirSync } = require('fs')
 const Expense = require('../model/expenseModel')
 
 
@@ -15,8 +13,12 @@ const sendLoginHTML = (req, res) => {
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
 
+  if(email === undefined || password === undefined ){
+    res.status(400).json({message:"All fields are required"})
+  }
+
   try {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } }, );
 
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });

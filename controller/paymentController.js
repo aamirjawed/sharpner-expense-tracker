@@ -2,6 +2,7 @@ const path = require('path');
 const { createOrder, getPaymentStatus: fetchPaymentStatus} = require('../services/cashfreeService');
 const Payment = require('../model/paymentModel');
 const User = require('../model/userModel');
+const sequelize = require('../utils/db-connection');
 
 // Serve Payment Page
 exports.getPaymentPage = (req, res) => {
@@ -17,6 +18,7 @@ exports.processPayment = async (req, res) => {
   const customerPhone = "9999999999";
 
   try {
+    const t = await sequelize.transaction()
     const paymentSessionId = await createOrder(
       orderId,
       orderAmount,
@@ -26,6 +28,7 @@ exports.processPayment = async (req, res) => {
     );
 
     if (!paymentSessionId) {
+      await t.rollback()
       return res.status(500).json({ message: "Failed to create payment session" });
     }
 
@@ -36,10 +39,13 @@ exports.processPayment = async (req, res) => {
       orderAmount,
       orderCurrency,
       paymentStatus: "Pending"
-    });
+    }, {transaction:t});
 
+    await t.commit()
     return res.status(200).json({ paymentSessionId, orderId });
+    
   } catch (error) {
+    await t.rollback()
     console.error("Error in processPayment:", error.message);
     return res.status(500).json({ message: "Error processing payment" });
   }
