@@ -194,43 +194,47 @@ const resetPasswordPage = async (req, res) => {
 
 
 const resetPassword = async (req, res) => {
-  const {password, confirmPassword} = req.body
-  const {id} = req.params
-
+  const { password, confirmPassword } = req.body;
+  const { id } = req.params;
 
   try {
-      if(!password || !confirmPassword){
-        return res.status(400).json({message:"All fields are required."})
-      }
+    if (!password || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
 
-      if(password !== confirmPassword){
-        return res.status(400).json({message:"Password does not match."})
-      }
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match." });
+    }
 
-      const resetRequest = await ForgotPassword.findByPk(id);
+    const resetRequest = await ForgotPassword.findByPk(id);
 
-      if(!resetRequest || resetRequest.isActive !== true){
-        return res.status(400).json({message:"Reset link is invalid or has expired"})
-      }
+    if (!resetRequest || resetRequest.isActive !== true) {
+      return res.status(400).json({ message: "Reset link is invalid or has expired." });
+    }
 
-      const user = await User.findByPk(resetRequest.userId);
+    const user = await User.findByPk(resetRequest.userId);
 
-      if(!user){
-        return res.status(404).json({message:"User not found"})
-      }
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
 
-      const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      user.password = hashedPassword;
-      await user.save()
+    user.password = hashedPassword;
+    await user.save();
 
-      resetRequest.isActive = false;
-      await resetRequest.save()
+    resetRequest.isActive = false;
+    await resetRequest.save();
+
+    
+    return res.status(200).json({ message: "Password has been reset successfully." });
+
   } catch (error) {
     console.error('Error resetting password:', error.message);
     return res.status(500).send('Something went wrong. Please try again later.');
   }
-}
+};
+
 
 
 
