@@ -5,6 +5,9 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Expense = require('../model/expenseModel')
 const sendEmail = require('../services/node-mail')
+const { router } = require('../routes/expenseRoutes')
+const ForgotPassword = require('../model/forgotPasswordModel')
+const { v4: uuidv4 } = require('uuid');
 
 
 const sendLoginHTML = (req, res) => {
@@ -124,6 +127,10 @@ const forgotPasswordPage = (req, res) => {
   res.sendFile(path.join(__dirname, '../public/forgotpassword.html'))
 }
 
+
+
+
+
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -132,18 +139,26 @@ const forgotPassword = async (req, res) => {
       return res.status(400).json({ message: 'Invalid email address' });
     }
 
-    
     const normalizedEmail = email.trim().toLowerCase();
+   
 
-    
     const user = await User.findOne({ where: { email: normalizedEmail } });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Assuming sendEmail is your function to email the reset link
-    await sendEmail(normalizedEmail);
+    const resetToken = uuidv4();
+
+    await ForgotPassword.create({
+      id: resetToken,
+      userId: user.id,
+      
+    });
+
+    const resetLink = `http://localhost:5000/user/password/reset-password/${resetToken}`;
+
+    await sendEmail(normalizedEmail, resetLink);
 
     return res.status(200).json({ message: 'Reset link sent successfully' });
   } catch (error) {
@@ -154,4 +169,75 @@ const forgotPassword = async (req, res) => {
 
 
 
-module.exports = {sendLoginHTML, sendSignupHTML, userSignup, userLogin, myProfile, premiumOrNot, forgotPasswordPage, forgotPassword}
+// reset password
+
+
+
+const resetPasswordPage = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const request = await ForgotPassword.findByPk(id);
+
+    // If token is valid and active, show reset password page
+    if (request && request.isActive === true) {
+      return res.sendFile(path.join(__dirname, '../public/resetpassword.html'));
+    }
+
+    // If token is invalid or inactive, redirect to forgot password page
+    return res.redirect('/forgot-password');
+  } catch (error) {
+    console.error('Error loading reset password page:', error.message);
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
+
+const resetPassword = async (req, res) => {
+  const {password, confirmPassword} = req.body
+  const {id} = req.params
+
+
+  try {
+      if(!password || !confirmPassword){
+        return res.status(400).json({message:"All fields are required."})
+      }
+
+      if(password !== confirmPassword){
+        return res.status(400).json({message:"Password does not match."})
+      }
+
+      const resetRequest = await ForgotPassword.findByPk(id);
+
+      if(!resetRequest || resetRequest.isActive !== true){
+        return res.status(400).json({message:"Reset link is invalid or has expired"})
+      }
+
+      const user = await User.findByPk(resetRequest.userId);
+
+      if(!user){
+        return res.status(404).json({message:"User not found"})
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10)
+
+      user.password = hashedPassword;
+      await user.save()
+
+      resetRequest.isActive = false;
+      await resetRequest.save()
+  } catch (error) {
+    console.error('Error resetting password:', error.message);
+    return res.status(500).send('Something went wrong. Please try again later.');
+  }
+}
+
+
+
+
+
+module.exports = {
+  sendLoginHTML, sendSignupHTML, userSignup, userLogin, myProfile, premiumOrNot, forgotPasswordPage, forgotPassword,
+  resetPasswordPage,
+  resetPassword
+}

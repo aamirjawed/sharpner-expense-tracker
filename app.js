@@ -14,12 +14,14 @@ const port = process.env.PORT || 3000;
 
 app.use(cors({
     origin: 'http://localhost:5000',
-  credentials: true  
-}))
-app.use(express.json())
+    credentials: true  
+}));
+
+app.use(express.json()); // For JSON requests
+app.use(express.urlencoded({ extended: false })); // For HTML form submissions
+
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.static(path.join(__dirname, 'views')));
-app.use(cookieParser())
+app.use(cookieParser());
 
 
 

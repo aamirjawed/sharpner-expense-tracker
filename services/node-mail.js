@@ -1,7 +1,7 @@
 const Sib = require('sib-api-v3-sdk');
 require('dotenv').config();
 
-const sendEmail = async (receiverEmail) => {
+const sendEmail = async (receiverEmail, resetLink) => {
   try {
     if (!process.env.API_KEY) {
       throw new Error("API_KEY is missing! Check your .env file.");
@@ -25,11 +25,13 @@ const sendEmail = async (receiverEmail) => {
     console.log(`Sending email to ${receiverEmail}...`);
 
     const response = await tranEmailApi.sendTransacEmail({
-      sender,
-      to: receiver,
-      subject: "Forgot your password",
-      textContent: `Track your expense`,
-    });
+  sender,
+  to: receiver,
+  subject: "Forgot your password?",
+  textContent: `Click the link below to reset your password:\n${resetLink}`,
+  htmlContent: `<p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`
+});
+
 
     console.log('Email sent successfully:', response);
     return response;
