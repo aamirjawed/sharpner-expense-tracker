@@ -107,18 +107,14 @@ const myProfile = async (req, res) => {
 }
 
 
-const premiumOrNot = async(req, res) => {
-  
-      if(req.isPremium === "Yes"){
-        return res.json({
-          
-          message:"yes" 
-        })
-      }else{
-        return res.json({message:"no"})
-      }
-  
-}
+const premiumOrNot = async (req, res) => {
+    if (req.isPremium === "Yes") {
+        return res.json({ message: "yes" });
+    } else {
+        return res.json({ message: "no" });
+    }
+};
+
 
 
 // forgot password
@@ -234,6 +230,8 @@ const resetPassword = async (req, res) => {
     return res.status(500).send('Something went wrong. Please try again later.');
   }
 };
+
+
 
 
 

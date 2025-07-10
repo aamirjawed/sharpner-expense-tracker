@@ -26,26 +26,27 @@
         Welcome, <span id="username">Loading...</span>!
       </h2>
       <p id="premium-tag"></p>
-<div class="leaderboard-wrapper">
-  <button class="leaderboard-btn">
-    <i class="fa-solid fa-trophy"></i> Show Leaderboard
-  </button>
 
-  <div class="leaderboard-floating hidden" id="leaderboard-floating">
-    <table class="leaderboard-table" id="leaderboard-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Total Expense</th>
-        </tr>
-      </thead>
-      <tbody class="leaderboard-body" id="leaderboard-body">
-        <!-- Dynamic rows go here -->
-      </tbody>
-    </table>
-  </div>
-</div>
+      <!-- Leaderboard -->
+      <div class="leaderboard-wrapper">
+        <button class="leaderboard-btn">
+          <i class="fa-solid fa-trophy"></i> Show Leaderboard
+        </button>
 
+        <div class="leaderboard-floating hidden" id="leaderboard-floating">
+          <table class="leaderboard-table" id="leaderboard-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Total Expense</th>
+              </tr>
+            </thead>
+            <tbody class="leaderboard-body" id="leaderboard-body">
+              <!-- Dynamic rows go here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <!-- Body -->
       <div class="expense-body">
@@ -90,9 +91,16 @@
 
         <!-- Table Section -->
         <div class="expense-table-wrapper">
-          <h2 style="margin-bottom: 1rem; color: #1e293b;">
-            <i class="fa-solid fa-table-list"></i> Expense History
-          </h2>
+          <!-- Heading and Download Button Side-by-Side -->
+          <div class="expense-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2 style="color: #1e293b;">
+              <i class="fa-solid fa-table-list"></i> Expense History
+            </h2>
+            <button id="download-expenses" class="download-expenses-btn">
+              <i class="fa-solid fa-download"></i> Download Expenses
+            </button>
+          </div>
+
           <table id="expense-table" class="expense-table">
             <thead>
               <tr>

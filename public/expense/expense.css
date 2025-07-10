@@ -262,6 +262,37 @@ body {
   gap: 0.4rem;
 }
 
+.download-expenses-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.download-expenses-btn:hover {
+  /* transform: translateY(-2px); */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+.download-expenses-btn:active {
+  transform: translateY(1);
+  
+}
+
+.download-expenses-btn i {
+  font-size: 1.1rem;
+}
+
+
 
 
 /* Responsive */

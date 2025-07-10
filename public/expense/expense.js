@@ -2,6 +2,7 @@ const form = document.getElementById('form');
 const usernameSpan = document.getElementById('username');
 const tableBody = document.getElementById('expense-table-body');
 const membershipBtn = document.getElementById('buy_membership')
+const downloadExpenseBtn = document.getElementById('download-expenses')
 
 // Initial load
 window.addEventListener('DOMContentLoaded', () => {
@@ -174,6 +175,7 @@ async function checkPremium() {
 }
 
 
+
 // fetch leaderboard for premium user
 
 const leaderBoardBody = document.getElementById('leaderboard-body');
@@ -185,21 +187,36 @@ const leaderBoardFloating = document.getElementById('leaderboard-floating'); // 
 leaderBoardFloating.classList.add('hidden');
 
 async function showLeaderBoardBtn() {
+  const leaderBoardBtn = document.querySelector('.leaderboard-btn'); // Make sure this exists in your HTML
+
   try {
     const response = await fetch("http://localhost:5000/user/check-premium", {
       method: "GET",
       credentials: "include"
     });
 
+    if (!response.ok) {
+      console.warn("User is not premium or server returned an error");
+      leaderBoardBtn.style.display = 'none';
+      return;
+    }
+
     const data = await response.json();
 
     if (data.message !== "yes") {
       leaderBoardBtn.style.display = 'none';
+      
+    } else {
+      leaderBoardBtn.style.display = 'inline-block'; // or "block", depending on your layout
+      
     }
+
   } catch (error) {
-    console.error("Error checking premium status", error);
+    console.error("Error checking premium status:", error);
+    leaderBoardBtn.style.display = 'none';
   }
 }
+
 
 async function userLeaderBoard() {
   try {
@@ -209,7 +226,6 @@ async function userLeaderBoard() {
     });
 
     if (response.status === 403) {
-      alert("Access denied. Only premium users can view the leaderboard.");
       return;
     }
 
@@ -250,3 +266,77 @@ leaderBoardBtn.addEventListener('click', async () => {
     leaderBoardBtn.textContent = 'Show Leaderboard';
   }
 });
+
+
+// download expenses
+
+
+// Function 1: Check if user is premium and show/hide button
+async function checkPremiumAndToggleButton() {
+  try {
+    const response = await fetch("http://localhost:5000/user/check-premium", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      downloadExpenseBtn.style.display = 'none';
+      return;
+    }
+
+    const data = await response.json();
+    console.log("Premium check response:", data);
+
+    // ✅ Check for string "yes"
+    if (data.message === "yes") {
+      downloadExpenseBtn.style.display = 'block';
+    } else {
+      downloadExpenseBtn.style.display = 'none';
+    }
+  } catch (error) {
+    console.error("Error checking premium status:", error);
+    downloadExpenseBtn.style.display = 'none';
+  }
+}
+
+// Function 2: Handle CSV download
+async function handleDownloadClick() {
+  try {
+    const response = await fetch("http://localhost:5000/expense/download", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      let errorMessage = "Failed to download expenses.";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch (jsonError) {
+        console.warn("Server did not return JSON.");
+      }
+      alert(errorMessage);
+      return;
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'expenses.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error downloading expenses:", error);
+    alert("An error occurred while downloading. Check the console for details.");
+  }
+}
+
+
+
+// Event listeners
+downloadExpenseBtn.addEventListener('click', handleDownloadClick);
+document.addEventListener('DOMContentLoaded', checkPremiumAndToggleButton);
+

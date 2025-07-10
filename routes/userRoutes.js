@@ -31,4 +31,6 @@ router.post('/password/forgot-password', forgotPassword)
 router.get(`/password/reset-password/:id`, resetPasswordPage)
 
 router.post('/password/reset-password/:id', resetPassword)
+
+
 module.exports = router

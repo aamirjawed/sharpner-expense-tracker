@@ -1,6 +1,7 @@
 const path = require('path');
 const Expense = require('../model/expenseModel');
 const User = require('../model/userModel');
+const { Parser } = require('json2csv');
 const sequelize = require('../utils/db-connection');
 
 const sentExpenseHTML = async (req, res) => {
@@ -107,9 +108,30 @@ const deleteExpense = async (req, res) => {
     }
 };
 
+
+const downloadExpense = async (req, res) => {
+    try {
+        const expenses = await Expense.findAll({where:{userId:req.userId}})
+
+        const fields = ['amount', 'description', 'category', 'createdAt']
+        const json2csvParser = new Parser({fields})
+        const csv = json2csvParser.parse(expenses)
+
+        res.header('Content-Type', 'text/csv');
+        res.attachment('expense.csv')
+        res.send(csv)
+
+        console.log(expenses)
+    } catch (error) {
+        console.error('Error downloading expenses:', error);
+        res.status(500).json({ error: 'Failed to download expenses' });
+    }
+}
+
 module.exports = {
     sentExpenseHTML,
     addExpense,
     fetchAllExpense,
-    deleteExpense
+    deleteExpense,
+    downloadExpense
 };

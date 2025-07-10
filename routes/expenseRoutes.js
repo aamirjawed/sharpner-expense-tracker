@@ -1,6 +1,7 @@
 const express = require('express')
-const { sentExpenseHTML, addExpense, fetchAllExpense, deleteExpense } = require('../controller/expenseController')
+const { sentExpenseHTML, addExpense, fetchAllExpense, deleteExpense, downloadExpense } = require('../controller/expenseController')
 const verifyToken = require('../middleware/authMiddleware')
+const checkPremium = require('../middleware/isPremium');
 
 const router = express()
 
@@ -11,6 +12,9 @@ router.post('/add-expense',verifyToken, addExpense)
 router.get('/all-expenses', verifyToken,fetchAllExpense)
 
 router.delete('/delete-expense/:id', deleteExpense)
+
+// download file
+router.get('/download', verifyToken, checkPremium, downloadExpense)
 
 
 module.exports = router
