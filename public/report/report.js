@@ -18,8 +18,6 @@ async function loadExpenses() {
     // Clear old rows
     tableBody.innerHTML = '';
 
-    let total = 0;
-
     // Insert rows
     result.data.forEach(expense => {
       const row = document.createElement('tr');
@@ -30,15 +28,13 @@ async function loadExpenses() {
         <td>${expense.amount}</td>
       `;
       tableBody.appendChild(row);
-
-      total += parseFloat(expense.amount);
     });
 
-    // Add total row
+    // ✅ Add total expense row at bottom
     const totalRow = document.createElement('tr');
     totalRow.innerHTML = `
-      <td colspan="3" style="font-weight: bold; text-align: right;">Total:</td>
-      <td style="font-weight: bold;">${total.toFixed(2)}</td>
+      <td colspan="3" style="text-align: right; font-weight: bold;">Total:</td>
+      <td style="font-weight: bold;">${result.totalAmount}</td>
     `;
     tableBody.appendChild(totalRow);
 

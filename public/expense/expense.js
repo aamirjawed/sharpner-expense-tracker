@@ -1,306 +1,171 @@
+
+
+
+
+// DOM Elements
 const form = document.getElementById('form');
 const usernameSpan = document.getElementById('username');
 const tableBody = document.getElementById('expense-table-body');
-const membershipBtn = document.getElementById('buy_membership')
-const downloadExpenseBtn = document.getElementById('download-expenses')
-
-// Initial load
-window.addEventListener('DOMContentLoaded', () => {
-    getProfile();
-    getAllExpenses();
-    checkPremium();
-    showLeaderBoardBtn()
-    userLeaderBoard()
-});
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const amount = parseFloat(document.getElementById('amount').value.trim());
-    const description = document.getElementById('description').value.trim();
-    const category = document.getElementById('category').value;
-
-    if (!amount || !description || !category) {
-        alert("All fields are required");
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost:5000/expense/add-expense', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({ amount, description, category })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message || "Something went wrong, try again.");
-            return;
-        }
-
-        alert("Expense has been added successfully");
-
-        //  Re-fetch all expenses
-        getAllExpenses();
-
-        // Reset form only after success
-        form.reset();
-
-    } catch (error) {
-        console.log("Expense js frontend error:", error);
-        alert("Something went wrong.");
-    }
-});
-
-async function getProfile() {
-    try {
-        const response = await fetch('http://localhost:5000/user/me', {
-            method: "GET",
-            credentials: 'include'
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message || "Something went wrong in getProfile. Try again.");
-            return;
-        }
-
-        if (data.name && usernameSpan) {
-            usernameSpan.textContent = data.name;
-        }
-
-    } catch (error) {
-        console.log("Error fetching user profile:", error);
-    }
-}
-
-async function getAllExpenses() {
-    try {
-        const response = await fetch('http://localhost:5000/expense/all-expenses', {
-            method: "GET",
-            credentials: 'include'
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message || "Server error while fetching expenses");
-            return;
-        }
-
-        // Clear table body before inserting
-        tableBody.innerHTML = '';
-
-        data.forEach((item) => {
-            const row = document.createElement('tr');
-            row.id = `expense-${item.id}`;
-            row.innerHTML = `
-                <td>${item.category}</td>
-                <td>${item.amount}</td>
-                <td>${item.description}</td>
-                <td><button class="delete-btn">Delete</button></td>
-            `;
-
-            // Add delete functionality
-            row.querySelector('.delete-btn').addEventListener('click', () => deleteExpense(item.id));
-            tableBody.appendChild(row);
-        });
-
-    } catch (error) {
-        console.error("Error fetching user expenses:", error);
-    }
-}
-
-async function deleteExpense(id) {
-    try {
-        const response = await fetch(`http://localhost:5000/expense/delete-expense/${id}`, {
-            method: "DELETE",
-            credentials: 'include'
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message || "Expense does not exist");
-            return;
-        }
-
-        // Remove from DOM
-        const row = document.getElementById(`expense-${id}`);
-        if (row) {
-            row.remove();
-        }
-
-        alert('Expense deleted successfully');
-
-    } catch (error) {
-        console.error("Error deleting expense:", error);
-        alert("Something went wrong while deleting the expense.");
-    }
-}
-
-
-membershipBtn.addEventListener('click', () => {
-    window.location.href = '/payment';
-});
-
+const membershipBtn = document.getElementById('buy_membership');
+const downloadExpenseBtn = document.getElementById('download-expenses');
+const viewReportBtn = document.getElementById('view-report-btn');
 const premiumTag = document.getElementById('premium-tag');
+const leaderBoardBtn = document.querySelector('.leaderboard-btn');
+const leaderBoardFloating = document.getElementById('leaderboard-floating');
+const leaderBoardBody = document.getElementById('leaderboard-body');
 
-async function checkPremium() {
-    try {
-        const response = await fetch("http://localhost:5000/user/check-premium", {
-            method: "GET",
-            credentials: "include"
-        });
+// Entry Point
+window.addEventListener('DOMContentLoaded', () => {
+  loadUserDashboard();
+});
 
-        const data = await response.json();
-        console.log("checkPremium response:", data);
-
-        if (data.message === "yes") {
-            premiumTag.textContent = "Premium Member";
-            membershipBtn.style.display = "none"
-        } else {
-            premiumTag.textContent = "";
-            premiumTag.style.display = "none";
-        }
-
-    } catch (error) {
-        console.log("Error in checkPremium function:", error.message);
-    }
+//  Main dashboard loading logic
+async function loadUserDashboard() {
+  await getProfile();
+  await getAllExpenses();
+  await handlePremiumFeatures();
 }
 
-
-
-// fetch leaderboard for premium user
-
-const leaderBoardBody = document.getElementById('leaderboard-body');
-const leaderBoardTable = document.getElementById('leaderboard-table');
-const leaderBoardBtn = document.querySelector('.leaderboard-btn');
-const leaderBoardFloating = document.getElementById('leaderboard-floating'); // ✅ NEW
-
-// Hide the floating leaderboard initially
-leaderBoardFloating.classList.add('hidden');
-
-async function showLeaderBoardBtn() {
-  const leaderBoardBtn = document.querySelector('.leaderboard-btn'); // Make sure this exists in your HTML
-
+// Reusable function to check premium status and perform actions
+async function isUserPremium(callbackIfYes, callbackIfNo) {
   try {
     const response = await fetch("http://localhost:5000/user/check-premium", {
       method: "GET",
       credentials: "include"
     });
 
-    if (!response.ok) {
-      console.warn("User is not premium or server returned an error");
-      leaderBoardBtn.style.display = 'none';
-      return;
-    }
-
     const data = await response.json();
 
-    if (data.message !== "yes") {
-      leaderBoardBtn.style.display = 'none';
-      
+    if (response.ok && data.message === "yes") {
+      callbackIfYes && callbackIfYes();
     } else {
-      leaderBoardBtn.style.display = 'inline-block'; // or "block", depending on your layout
-      
+      callbackIfNo && callbackIfNo();
     }
 
   } catch (error) {
-    console.error("Error checking premium status:", error);
-    leaderBoardBtn.style.display = 'none';
+    console.error("Premium check failed:", error);
+    callbackIfNo && callbackIfNo();
   }
 }
 
-
-async function userLeaderBoard() {
+//  Fetch user profile and display username
+async function getProfile() {
   try {
-    const response = await fetch('http://localhost:5000/user/all-users', {
+    const response = await fetch('http://localhost:5000/user/me', {
       method: "GET",
       credentials: 'include'
     });
 
-    if (response.status === 403) {
-      return;
-    }
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      alert(errorData.message || "Server error while fetching leaderboard.");
-      return;
-    }
-
     const data = await response.json();
-    leaderBoardBody.innerHTML = '';
-
-    data.forEach((item) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${item.name}</td>
-        <td>${item.total_expense}</td>
-      `;
-      leaderBoardBody.appendChild(row);
-    });
+    if (response.ok && data.name) {
+      usernameSpan.textContent = data.name;
+    }
 
   } catch (error) {
-    console.error("Error fetching leaderboard:", error);
-    alert("Something went wrong while fetching the leaderboard.");
+    console.error("Error fetching profile:", error);
   }
 }
 
-// ✅ Toggle the floating wrapper
-leaderBoardBtn.addEventListener('click', async () => {
-  const isHidden = leaderBoardFloating.classList.contains('hidden');
+// Add expense
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-  if (isHidden) {
-    leaderBoardFloating.classList.remove('hidden');
-    leaderBoardBtn.textContent = 'Hide Leaderboard';
-    await userLeaderBoard();
-  } else {
-    leaderBoardFloating.classList.add('hidden');
-    leaderBoardBtn.textContent = 'Show Leaderboard';
+  const amount = parseFloat(document.getElementById('amount').value.trim());
+  const description = document.getElementById('description').value.trim();
+  const category = document.getElementById('category').value;
+
+  if (!amount || !description || !category) {
+    return showToast("All fields are required");
+  }
+
+  try {
+    const response = await fetch('http://localhost:5000/expense/add-expense', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ amount, description, category })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return showToast(data.message || "Failed to add expense.");
+    }
+
+    showToast("Expense added successfully");
+    form.reset();
+    getAllExpenses();
+
+  } catch (error) {
+    console.error("Error adding expense:", error);
+    showToast("Error occurred while adding expense.");
   }
 });
 
-
-// download expenses
-
-
-// Function 1: Check if user is premium and show/hide button
-async function checkPremiumAndToggleButton() {
+//  Fetch and render all expenses
+async function getAllExpenses() {
   try {
-    const response = await fetch("http://localhost:5000/user/check-premium", {
+    const response = await fetch('http://localhost:5000/expense/all-expenses', {
       method: "GET",
-      credentials: "include",
+      credentials: 'include'
     });
 
-    if (!response.ok) {
-      downloadExpenseBtn.style.display = 'none';
-      return;
-    }
-
     const data = await response.json();
-    console.log("Premium check response:", data);
 
-    // ✅ Check for string "yes"
-    if (data.message === "yes") {
-      downloadExpenseBtn.style.display = 'block';
-    } else {
-      downloadExpenseBtn.style.display = 'none';
+    if (!response.ok) {
+      return showToast(data.message || "Error fetching expenses.");
     }
+
+    tableBody.innerHTML = ''; // Clear current rows
+
+    data.forEach((item) => {
+      const row = document.createElement('tr');
+      row.id = `expense-${item.id}`;
+      row.innerHTML = `
+        <td>${item.category}</td>
+        <td>${item.amount}</td>
+        <td>${item.description}</td>
+        <td><button class="delete-btn">Delete</button></td>
+      `;
+      row.querySelector('.delete-btn').addEventListener('click', () => deleteExpense(item.id));
+      tableBody.appendChild(row);
+    });
+
   } catch (error) {
-    console.error("Error checking premium status:", error);
-    downloadExpenseBtn.style.display = 'none';
+    console.error("Error loading expenses:", error);
   }
 }
 
-// Function 2: Handle CSV download
-async function handleDownloadClick() {
+//  Delete expense
+async function deleteExpense(id) {
+  try {
+    const response = await fetch(`http://localhost:5000/expense/delete-expense/${id}`, {
+      method: "DELETE",
+      credentials: 'include'
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return showToast(data.message || "Expense not found.");
+    }
+
+    document.getElementById(`expense-${id}`)?.remove();
+    showToast("Expense deleted");
+
+  } catch (error) {
+    console.error("Delete error:", error);
+    showToast("Something went wrong while deleting.");
+  }
+}
+
+//  Redirect to membership payment
+membershipBtn.addEventListener('click', () => {
+  window.location.href = '/payment';
+});
+
+//  Download expenses (only for premium)
+downloadExpenseBtn.addEventListener('click', async () => {
   try {
     const response = await fetch("http://localhost:5000/expense/download", {
       method: "GET",
@@ -308,15 +173,8 @@ async function handleDownloadClick() {
     });
 
     if (!response.ok) {
-      let errorMessage = "Failed to download expenses.";
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.error || errorMessage;
-      } catch (jsonError) {
-        console.warn("Server did not return JSON.");
-      }
-      alert(errorMessage);
-      return;
+      const errData = await response.json();
+      return showToast(errData.error || "Failed to download.");
     }
 
     const blob = await response.blob();
@@ -328,15 +186,86 @@ async function handleDownloadClick() {
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
+
   } catch (error) {
-    console.error("Error downloading expenses:", error);
-    alert("An error occurred while downloading. Check the console for details.");
+    console.error("Download error:", error);
+    showToast("Error downloading file.");
   }
+});
+
+//  Redirect to report page
+viewReportBtn.addEventListener('click', () => {
+  window.location.href = '/expense/report';
+});
+
+// Load leaderboard data
+async function loadLeaderBoard() {
+  try {
+    const response = await fetch('http://localhost:5000/user/all-users', {
+      method: "GET",
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      return showToast(err.message || "Leaderboard fetch failed");
+    }
+
+    const data = await response.json();
+    leaderBoardBody.innerHTML = '';
+
+    data.forEach(user => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${user.name}</td>
+        <td>${user.total_expense}</td>
+      `;
+      leaderBoardBody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Leaderboard error:", error);
+  }
+}
+
+// Toggle leaderboard visibility
+leaderBoardBtn.addEventListener('click', async () => {
+  const hidden = leaderBoardFloating.classList.toggle('hidden');
+  leaderBoardBtn.textContent = hidden ? 'Show Leaderboard' : 'Hide Leaderboard';
+  if (!hidden) await loadLeaderBoard();
+});
+
+//  Show/hide buttons for premium features
+async function handlePremiumFeatures() {
+  isUserPremium(
+    () => {
+      premiumTag.textContent = "Premium Member";
+      membershipBtn.style.display = 'none';
+      downloadExpenseBtn.style.display = 'block';
+      viewReportBtn.style.display = 'block';
+      leaderBoardBtn.style.display = 'inline-block';
+    },
+    () => {
+      premiumTag.textContent = "";
+      premiumTag.style.display = 'none';
+      downloadExpenseBtn.style.display = 'none';
+      viewReportBtn.style.display = 'none';
+      leaderBoardBtn.style.display = 'none';
+    }
+  );
 }
 
 
 
-// Event listeners
-downloadExpenseBtn.addEventListener('click', handleDownloadClick);
-document.addEventListener('DOMContentLoaded', checkPremiumAndToggleButton);
+function showToast(message, type = "info") {
+  const toastContainer = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.textContent = message;
 
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}

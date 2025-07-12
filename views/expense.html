@@ -75,7 +75,7 @@
               <i class="fa-solid fa-list-ul"></i> Select Category:
             </label>
             <select id="category">
-               <option value="" disabled selected hidden>Choose an option</option>
+              <option value="" disabled selected hidden>Choose an option</option>
               <option>Rent</option>
               <option>Food</option>
               <option>Groceries</option>
@@ -92,14 +92,19 @@
 
         <!-- Table Section -->
         <div class="expense-table-wrapper">
-          <!-- Heading and Download Button Side-by-Side -->
+          <!-- Heading and Download Button Row -->
           <div class="expense-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
             <h2 style="color: #1e293b;">
               <i class="fa-solid fa-table-list"></i> Expense History
             </h2>
-            <button id="download-expenses" class="download-expenses-btn">
-              <i class="fa-solid fa-download"></i> Download Expenses
-            </button>
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="download-expenses" class="download-expenses-btn">
+                <i class="fa-solid fa-download"></i> Download Expenses
+              </button>
+              <button id="view-report-btn" class="view-report-btn">
+                <i class="fa-solid fa-chart-line"></i> View Report
+              </button>
+            </div>
           </div>
 
           <table id="expense-table" class="expense-table">
@@ -119,6 +124,13 @@
       </div>
     </div>
 
+
+    <div id="toast-container" class="toast-container"></div>
+
+
+    <!-- JavaScript -->
     <script src="/expense/expense.js"></script>
+
+    
   </body>
 </html>

@@ -3,7 +3,7 @@
 const Expense = require("../model/expenseModel");
 const path = require('path')
 const User = require("../model/userModel");
-const { fn, col } = require('sequelize');
+const { fn, col, Op } = require('sequelize');
 const sequelize = require("../utils/db-connection");
 
 const getUserLeaderboard  = async (req, res) => {
@@ -47,52 +47,66 @@ const viewReportPage = (req, res) => {
 
 
 
-const viewReport = async(req, res) => {
+
+
+
+const viewReport = async (req, res) => {
   try {
     const groupBy = req.query.groupBy || 'day';
     let format;
 
-    switch(groupBy){
+    switch (groupBy) {
       case 'day':
         format = '%Y-%m-%d';
         break;
-
       case 'week':
-        format = '%Y-W%u';  
+        format = '%Y-W%u';
         break;
-
       case 'month':
         format = '%Y-%m';
         break;
-
       default:
-        return res.status(400).json({ message: "Invalid group by value" });
+        return res.status(400).json({ message: 'Invalid group by value' });
     }
 
-    const expenses = await Expense.findAll({
-  where: { userId: req.userId },
-  attributes: [
-    [fn('DATE_FORMAT', col('createdAt'), format), 'period'],
-    [fn('SUM', col('amount')), 'totalAmount']
-  ],
-  group: [fn('DATE_FORMAT', col('createdAt'), format)],
-  order: [[col('createdAt'), 'DESC']],
-  raw: true
-});
+    const formattedDate = fn('DATE_FORMAT', col('createdAt'), format);
 
+    // 🔹 1. Get individual expenses
+    const expenses = await Expense.findAll({
+      where: { userId: req.userId },
+      attributes: [
+        [formattedDate, 'date'],
+        'category',
+        'description',
+        'amount'
+      ],
+      order: [[col('createdAt'), 'DESC']],
+      raw: true
+    });
+
+    // 🔹 2. Get total amount separately
+    const totalResult = await Expense.findOne({
+      where: { userId: req.userId },
+      attributes: [[fn('SUM', col('amount')), 'total']],
+      raw: true
+    });
+
+    const totalAmount = parseFloat(totalResult.total) || 0;
 
     return res.status(200).json({
       success: true,
-      data: expenses
+      data: expenses,
+      totalAmount: totalAmount.toFixed(2)
     });
   } catch (error) {
-    console.error('Error in viewReport:', error); 
+    console.error('Error in viewReport:', error.message);
     return res.status(500).json({
       success: false,
       message: 'Something went wrong'
     });
   }
-}
+};
+
 
 
 
