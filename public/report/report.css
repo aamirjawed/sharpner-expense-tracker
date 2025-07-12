@@ -1,0 +1,128 @@
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafc;
+  color: #1f1f1f;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+/* Heading */
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #212529;
+}
+
+/* Control Group */
+.control-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+select,
+button {
+  font-size: 1rem;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+select:focus,
+button:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Table Container */
+.table-container {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+thead {
+  background-color: #f1f3f5;
+}
+
+th, td {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #495057;
+}
+
+
+
+/* Responsive Table for Mobile */
+@media (max-width: 768px) {
+  .control-group {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  table {
+    font-size: 0.875rem;
+    min-width: 100%;
+  }
+
+  th, td {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  body {
+    padding: 1rem;
+  }
+}

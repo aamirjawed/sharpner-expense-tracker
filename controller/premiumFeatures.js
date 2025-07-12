@@ -1,7 +1,9 @@
 
 
 const Expense = require("../model/expenseModel");
+const path = require('path')
 const User = require("../model/userModel");
+const { fn, col } = require('sequelize');
 const sequelize = require("../utils/db-connection");
 
 const getUserLeaderboard  = async (req, res) => {
@@ -35,4 +37,64 @@ const getUserLeaderboard  = async (req, res) => {
   }
 }
 
-module.exports = {getUserLeaderboard}
+
+
+// view report - daily, weekly, monthly
+
+const viewReportPage = (req, res) => {
+  res.sendFile(path.join(__dirname, '../views/report.html'))
+}
+
+
+
+const viewReport = async(req, res) => {
+  try {
+    const groupBy = req.query.groupBy || 'day';
+    let format;
+
+    switch(groupBy){
+      case 'day':
+        format = '%Y-%m-%d';
+        break;
+
+      case 'week':
+        format = '%Y-W%u';  
+        break;
+
+      case 'month':
+        format = '%Y-%m';
+        break;
+
+      default:
+        return res.status(400).json({ message: "Invalid group by value" });
+    }
+
+    const expenses = await Expense.findAll({
+  where: { userId: req.userId },
+  attributes: [
+    [fn('DATE_FORMAT', col('createdAt'), format), 'period'],
+    [fn('SUM', col('amount')), 'totalAmount']
+  ],
+  group: [fn('DATE_FORMAT', col('createdAt'), format)],
+  order: [[col('createdAt'), 'DESC']],
+  raw: true
+});
+
+
+    return res.status(200).json({
+      success: true,
+      data: expenses
+    });
+  } catch (error) {
+    console.error('Error in viewReport:', error); 
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong'
+    });
+  }
+}
+
+
+
+
+module.exports = {getUserLeaderboard, viewReport, viewReportPage}

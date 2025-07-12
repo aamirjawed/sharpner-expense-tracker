@@ -24,7 +24,8 @@ const Expense = sequelize.define('expenses', {
     userId:{
         type:DataTypes.INTEGER,
         allowNull:false
-    }
+    },
+    
 
 
 });

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Report</title>
+  <link rel="stylesheet" href="/report/report.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  
+</head>
+<body>
+
+  <h1>Expense Report</h1>
+
+  <div class="control-group">
+    <label for="groupBy">Group By:</label>
+    <select id="groupBy">
+      <option value="day">Day</option>
+      <option value="week">Week</option>
+      <option value="month">Month</option>
+    </select>
+    <button onclick="loadExpenses()">Load Report</button>
+  </div>
+
+  <div class="table-container">
+    <table id="expenseTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will populate this -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="/report/report.js"></script>
+</body>
+
+</html>
