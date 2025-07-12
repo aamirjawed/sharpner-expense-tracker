@@ -4,62 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login | Expense Tracker</title>
-  <link rel="stylesheet" href="/login/login.css" />
-      <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      rel="stylesheet"
-    />
 
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/login/login.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <div class="form-container" id="form">
-    <h1 class="form-title">Expense Tracker</h1>
-    <button id="buy_membership">
-          <i class="fa-solid fa-crown"></i> Buy Membership
-        </button>
-      </header>
-    
-    <p style="margin-top: 4rem; font-size: 1.1rem; color: #555;">Track your expenses, manage your budget, and gain control of your finances.</p>
-
-    <div class="main-container">
-
-     
-      <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
-        <img src="/assests/login-image.png" class="login-img" alt="Login Visual" />
-        
-        
-        <ul style="margin-top: 1rem; padding: 0 1rem; list-style: none; color: #333; font-size: 0.95rem;">
-          <li>💸 Smart Expense Categorization</li>
-          <li>📊 Real-time Spending Insights</li>
-          <li>🔔 Budget Alerts & Reminders</li>
-        </ul>
+  <div class="wrapper">
+    <!-- Left Column: Form -->
+    <div class="form-section">
+      <div class="form-header">
+        <h1 class="form-title">Expense Tracker</h1>
+        <button id="buy_membership"><i class="fa-solid fa-crown"></i> Buy Membership</button>
       </div>
 
-     
       <form class="login-form">
-        <h1>Login</h1>
-
-       
-        <p style="font-size: 0.95rem; color: #666; margin-top: -1rem; margin-bottom: 1rem;">Securely log in to manage your budget.</p>
+        <h1>Login to your account</h1>
+        <p>Enter your details to login.</p>
 
         <div class="form-group">
-          <label for="email">Email:</label>
+          <label for="email">Email</label>
           <input type="email" id="email" name="email" placeholder="Enter your email" required />
         </div>
 
         <div class="form-group">
-          <label for="password">Password:</label>
+          <label for="password">Password <a class="forgot-password" href="/forgotpassword.html">Forgot password?</a></label>
           <input type="password" id="password" name="password" placeholder="Enter your password" required />
         </div>
-        <p class="forgot-password"><a href="/forgotpassword.html">Forgot Password?</a></p>
+
         <div class="form-group">
-          <button type="submit">Log In</button>
+          <button type="submit">Login</button>
         </div>
 
         <p>Don't have an account? <a href="/signup.html">Sign up</a></p>
       </form>
+    </div>
 
+    <!-- Right Column: Image & Feature List -->
+    <div class="image-section">
+      <!-- <img src="/assets/login-image.png" alt="Abstract Background" /> -->
+
+      <ul class="features-list">
+        <li>💸 <strong>Track Expenses</strong> effortlessly and stay on top of your budget.</li>
+        <li>📊 <strong>Visual Insights</strong> through clean charts and real-time reports.</li>
+        <li>🔔 <strong>Smart Alerts</strong> to help you avoid overspending.</li>
+        <li>🧠 <strong>Financial Clarity</strong> that boosts confidence and control.</li>
+        <li>🛡️ <strong>Secure & Private</strong> — your data stays yours.</li>
+      </ul>
     </div>
   </div>
 
