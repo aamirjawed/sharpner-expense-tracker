@@ -4,39 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Signup | Expense Tracker</title>
-  <link rel="stylesheet" href="/signup/signup.css" />
-      <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      rel="stylesheet"
-    />
 
+  <link rel="stylesheet" href="/signup/signup.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <div class="form-container" id="form">
-    <h1 class="form-title">Expense Tracker</h1>
-     <button id="buy_membership">
-          <i class="fa-solid fa-crown"></i> Buy Membership
-        </button>
-      </header>
-
-    <!-- Tagline -->
-    <p style="margin-top: 0rem; font-size: 1.1rem; color: #4a4a4a; font-weight: 500; text-align: center;">
-      Create your account to start tracking your income and expenses with ease.
-    </p>
-
-    <div class="main-container">
-      <!-- Image & Features -->
+  <div class="wrapper">
+    
+    <!-- Left Column: Image + Features -->
+    <div class="image-section">
       <div style="display: flex; flex-direction: column; align-items: center;">
-        <img src="/assests/login-image.png" class="login-img" alt="Signup Visual" />
-        <ul style="margin-top: 1rem; padding: 0 1rem; list-style: none; color: #333; font-size: 0.95rem;">
-          <li>💡 Track daily spending</li>
-          <li>📊 Get monthly reports</li>
-          <li>🔒 Secure & private</li>
+       
+        <ul class="features-list">
+          <li>💡 <strong>Track daily spending</strong> with ease and accuracy.</li>
+          <li>📊 <strong>Visual monthly reports</strong> to understand where your money goes.</li>
+          <li>🔐 <strong>Private and secure</strong>—your data is always safe.</li>
+          <li>⚡ <strong>Instant insights</strong> with real-time tracking & tips.</li>
         </ul>
       </div>
+    </div>
 
-      <!-- Signup Form -->
+    <!-- Right Column: Signup Form -->
+    <div class="form-section">
+      <div class="form-header">
+        <h1 class="form-title">Expense Tracker</h1>
+        <button id="buy_membership">
+          <i class="fa-solid fa-crown"></i> Buy Membership
+        </button>
+      </div>
+
+      <p class="tagline">Create your account to start tracking your income and expenses.</p>
+
       <form class="signup-form">
         <h1>Signup</h1>
 
@@ -61,6 +61,7 @@
         </div>
       </form>
     </div>
+
   </div>
 
   <script src="/signup/signup.js"></script>

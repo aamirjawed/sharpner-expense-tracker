@@ -133,6 +133,10 @@ body {
   cursor: pointer;
 }
 
+.form-group button:hover {
+  background: linear-gradient(to right, #4338ca, #6366f1);
+}
+
 .login-form a {
   color: #4f46e5;
   font-weight: 600;

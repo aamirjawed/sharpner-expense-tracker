@@ -1,174 +1,181 @@
-/* Reset and base styles */
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 body {
-  background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-  color: #333;
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+  background: #f9fbff;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Container */
-.form-container {
+/* Layout wrapper */
+.wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding: 6rem 1rem 3rem; 
-  position: relative;
+  height: 100vh;
+  width: 100%;
 }
 
-/* Title */
-.form-title {
-  position: absolute;
-  top: 1rem;
-  left: 2rem;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2a2a2a;
-}
-
-#buy_membership {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  background-color: #10b981;
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-#buy_membership:hover {
-  background-color: #059669;
-  transform: translateY(-1px);
-}
-
-/* Tagline */
-.form-container > p {
-  margin-top: 5rem;
-  font-size: 1.05rem;
-  color: #4a4a4a;
-  font-weight: 500;
-  text-align: center;
-  max-width: 600px;
-  line-height: 1.6;
-  padding: 0 1rem;
-}
-
-/* Main Content */
-.main-container {
+/* LEFT: Image and Features */
+.image-section {
+  flex: 1;
+  background: linear-gradient(135deg, #cbd5ff, #e2e8f0);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4rem;
-  margin-top: 2rem;
-  width: 100%;
-  max-width: 1200px;
-  flex-wrap: wrap;
-  font-weight: 500;
+  padding: 2rem;
 }
 
-.main-container ul {
+.features-list {
   list-style: none;
-  padding-left: 0;
+  padding: 0;
+  max-width: 500px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1f2937;
+  line-height: 1.7;
 }
 
-.main-container ul li {
-  margin-bottom: 0.6rem;
-  line-height: 1.6;
+.features-list li {
+  margin-bottom: 1.2rem;
+  padding-left: 2rem;
+  position: relative;
 }
 
-/* Image */
-.login-img {
-  width: 450px;
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
+.features-list li::before {
+  content: '💡';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 1.2rem;
+}
+
+.features-list li:nth-child(2)::before { content: '📊'; }
+.features-list li:nth-child(3)::before { content: '🔐'; }
+.features-list li:nth-child(4)::before { content: '⚡'; }
+
+.features-list li strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* RIGHT: Signup Form Section */
+.form-section {
+  flex: 1;
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.form-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+#buy_membership {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(to right, #facc15, #fde68a);
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+}
+
+/* Tagline */
+.tagline {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
 }
 
 /* Signup Form */
 .signup-form {
-  background-color: #ffffff;
+  background: #ffffff;
   padding: 2rem;
-  width: 350px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  transition: transform 0.3s ease;
+  gap: 1.2rem;
 }
 
 .signup-form h1 {
-  text-align: center;
-  color: #444;
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
 }
 
-/* Form Groups */
 .form-group {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .form-group label {
+  font-size: 0.95rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  color: #555;
+  color: #374151;
 }
 
 .form-group input {
   padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  transition: border-color 0.3s ease;
+  background-color: #f9fafb;
+  transition: border 0.2s ease-in-out;
 }
 
 .form-group input:focus {
-  border-color: #6a11cb;
+  border-color: #6366f1;
   outline: none;
 }
 
-/* Submit Button */
 .form-group button {
-  padding: 0.9rem;
-    border: none;
-    border-radius: 10px;
-    background-color: #4f46e5;
-    color: white;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-} 
-
-.form-group button:hover {
-  background-color: #4338ca;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
 }
 
-/* Signup Link */
+.form-group button:hover {
+  background: linear-gradient(to right, #4338ca, #6366f1);
+}
+
+.form-group p {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
 .form-group a {
-  color: #4a00e0;
+  color: #4f46e5;
+  font-weight: 600;
   text-decoration: none;
-  font-weight: bold;
 }
 
 .form-group a:hover {
@@ -176,82 +183,38 @@ body {
 }
 
 /* Responsive Styles */
-@media (max-width: 1024px) {
-  .login-img {
-    width: 350px;
+@media (max-width: 900px) {
+  .wrapper {
+    flex-direction: column;
   }
 
-  .form-title {
-    font-size: 2rem;
-    left: 1rem;
+  .image-section {
+    display: none;
   }
 
-  #buy_membership {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.95rem;
-  }
-
-  .signup-form {
-    width: 300px;
+  .form-section {
+    align-items: center;
     padding: 2rem;
   }
-}
-
-@media (max-width: 768px) {
-  .main-container {
-    flex-direction: column;
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-
-  .login-img {
-    width: 300px;
-  }
 
   .signup-form {
-    width: 90%;
-    max-width: 350px;
+    width: 100%;
+    max-width: 360px;
     padding: 1.5rem;
   }
 
-  .form-title {
-    font-size: 1.8rem;
-    left: 1rem;
+  .form-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 
-  .form-container > p {
-    margin-top: 3.5rem;
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
-}
-
-@media (max-width: 480px) {
   .form-title {
-    font-size: 1.5rem;
-    top: 0.5rem;
-    left: 0.5rem;
+    font-size: 1.6rem;
   }
 
   #buy_membership {
-    top: 0.5rem;
-    right: 0.5rem;
-    padding: 0.5rem 1rem;
     font-size: 0.85rem;
-  }
-
-  .login-img {
-    width: 100%;
-    max-width: 250px;
-  }
-
-  .signup-form {
-    padding: 1rem;
-  }
-
-  .form-container > p {
-    font-size: 0.95rem;
-    padding: 0 0.5rem;
-    margin-top: 2rem;
+    padding: 0.4rem 0.8rem;
   }
 }
