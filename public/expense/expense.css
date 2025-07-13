@@ -123,6 +123,23 @@ body {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
+/* Note Field Specific */
+#note {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  transition: all 0.3s ease;
+}
+
+#note:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
 /* Submit Button */
 .expense-form button {
   width: 100%;
@@ -155,8 +172,9 @@ body {
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  max-height: 500px;
+  max-height: 600px;
   transition: box-shadow 0.3s ease;
+  /* overflow-x: auto; */
 }
 
 .expense-table-wrapper:hover {
@@ -185,6 +203,14 @@ body {
 
 .expense-table td {
   color: #475569;
+}
+
+/* NOTE Column Wrapping */
+.expense-table td:nth-child(4) {
+  max-width: 200px;
+  white-space: normal;
+  word-break: break-word;
+  color: #334155;
 }
 
 .expense-table tr:last-child td {
@@ -247,6 +273,7 @@ body {
   gap: 0.4rem;
 }
 
+/* Buttons */
 .download-expenses-btn {
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: #ffffff;
@@ -282,6 +309,35 @@ body {
   background-color: #1e293b;
 }
 
+/* Pagination Controls */
+#pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+#pagination-controls button {
+  padding: 8px 14px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#pagination-controls button:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+#pagination-controls button:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
 /* Toast Notification */
 .toast-container {
   position: fixed;
@@ -307,50 +363,6 @@ body {
   10% { opacity: 1; transform: translateY(0); }
   90% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(20px); }
-}
-
-/* Pagination Buttons */
-#pagination-controls button {
-  margin: 0 4px;
-  padding: 5px 10px;
-  background-color: #0ea5e9;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#pagination-controls button:disabled {
-  background-color: #94a3b8;
-  cursor: not-allowed;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .expense-body {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 1rem 0;
-  }
-
-  .expense-form,
-  .expense-table-wrapper {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .expense-heading,
-  .username {
-    align-self: center;
-    margin-left: 0;
-    text-align: center;
-  }
-
-  #buy_membership {
-    position: static;
-    margin: 1rem auto;
-    display: block;
-  }
 }
 
 /* Floating leaderboard container */
@@ -413,6 +425,34 @@ body {
 
 .hidden {
   display: none;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .expense-body {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem 0;
+  }
+
+  .expense-form,
+  .expense-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .expense-heading,
+  .username {
+    align-self: center;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  #buy_membership {
+    position: static;
+    margin: 1rem auto;
+    display: block;
+  }
 }
 
 @media (max-width: 600px) {

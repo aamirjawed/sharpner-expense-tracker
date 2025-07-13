@@ -10,7 +10,7 @@ const sentExpenseHTML = async (req, res) => {
 
 const addExpense = async (req, res) => {
     const t = await sequelize.transaction();
-    const { amount, description, category } = req.body;
+    const { amount, description, category, note } = req.body;
 
     if (amount === undefined || description === undefined || category === undefined) {
         return res.status(400).json({ success: false, message: "All fields are required" });
@@ -21,7 +21,8 @@ const addExpense = async (req, res) => {
             amount: amount,
             description: description,
             category: category,
-            userId: req.userId
+            userId: req.userId,
+            note:note
         }, { transaction: t });
 
         if (!expense) {

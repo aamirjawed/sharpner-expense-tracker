@@ -73,6 +73,7 @@ form.addEventListener('submit', async (e) => {
   const amount = parseFloat(document.getElementById('amount').value.trim());
   const description = document.getElementById('description').value.trim();
   const category = document.getElementById('category').value;
+  const note = document.getElementById('note').value.trim()
 
   if (!amount || !description || !category) {
     return showToast("All fields are required");
@@ -83,7 +84,7 @@ form.addEventListener('submit', async (e) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ amount, description, category })
+      body: JSON.stringify({ amount, description, category, note })
     });
 
     const data = await response.json();
@@ -141,6 +142,7 @@ function renderPaginatedExpenses() {
       <td>${item.category}</td>
       <td>${item.amount}</td>
       <td>${item.description}</td>
+      <td>${item.note}</td>
       <td><button class="delete-btn">Delete</button></td>
     `;
     row.querySelector('.delete-btn').addEventListener('click', () => deleteExpense(item.id));

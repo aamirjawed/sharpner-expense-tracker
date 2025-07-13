@@ -25,6 +25,10 @@ const Expense = sequelize.define('expenses', {
         type:DataTypes.INTEGER,
         allowNull:false
     },
+    note:{
+        type:DataTypes.TEXT,
+        allowNull:false
+    }
     
 
 
