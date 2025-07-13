@@ -156,26 +156,11 @@ body {
   padding: 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   max-height: 500px;
-  overflow: auto;   
   transition: box-shadow 0.3s ease;
 }
 
 .expense-table-wrapper:hover {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-}
-
-/* Optional Scrollbar Styling */
-.expense-table-wrapper::-webkit-scrollbar {
-  width: 8px;
-}
-
-.expense-table-wrapper::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
-  border-radius: 10px;
-}
-
-.expense-table-wrapper:hover::-webkit-scrollbar-thumb {
-  background-color: #94a3b8;
 }
 
 /* Table */
@@ -247,7 +232,7 @@ body {
   transform: translateY(-1px);
 }
 
-#premium-tag{
+#premium-tag {
   position: absolute;
   top: 2rem;
   right: 2rem;
@@ -278,20 +263,9 @@ body {
 }
 
 .download-expenses-btn:hover {
-  /* transform: translateY(-2px); */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
 }
-
-.download-expenses-btn:active {
-  transform: translateY(1);
-  
-}
-
-.download-expenses-btn i {
-  font-size: 1.1rem;
-}
-
 
 .view-report-btn {
   background-color: #0f172a;
@@ -308,7 +282,7 @@ body {
   background-color: #1e293b;
 }
 
-
+/* Toast Notification */
 .toast-container {
   position: fixed;
   bottom: 30px;
@@ -335,8 +309,21 @@ body {
   100% { opacity: 0; transform: translateY(20px); }
 }
 
+/* Pagination Buttons */
+#pagination-controls button {
+  margin: 0 4px;
+  padding: 5px 10px;
+  background-color: #0ea5e9;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-
+#pagination-controls button:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
 
 /* Responsive */
 @media (max-width: 900px) {
@@ -366,13 +353,12 @@ body {
   }
 }
 
-
 /* Floating leaderboard container */
 #leaderboard-floating {
-  position: fixed; /* Float above */
+  position: fixed;
   top: 6rem;
   right: 2rem;
-  z-index: 999; /* Make sure it's on top */
+  z-index: 999;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -383,7 +369,7 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-/* Leaderboard table inside floating card */
+/* Leaderboard table */
 .leaderboard-table {
   width: 100%;
   border-collapse: collapse;
@@ -404,7 +390,6 @@ body {
   font-weight: 600;
 }
 
-/* Leaderboard button (stay inline under welcome) */
 .leaderboard-btn {
   font-size: 1rem;
   padding: 0.6rem 1.2rem;
@@ -426,12 +411,10 @@ body {
   transform: translateY(-1px);
 }
 
-/* Hidden class */
 .hidden {
   display: none;
 }
 
-/* Responsive fix for smaller screens */
 @media (max-width: 600px) {
   #leaderboard-floating {
     top: auto;
@@ -441,4 +424,3 @@ body {
     width: 90%;
   }
 }
-

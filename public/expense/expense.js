@@ -1,8 +1,4 @@
 
-
-
-
-// DOM Elements
 const form = document.getElementById('form');
 const usernameSpan = document.getElementById('username');
 const tableBody = document.getElementById('expense-table-body');
@@ -14,19 +10,23 @@ const leaderBoardBtn = document.querySelector('.leaderboard-btn');
 const leaderBoardFloating = document.getElementById('leaderboard-floating');
 const leaderBoardBody = document.getElementById('leaderboard-body');
 
+let expenses = [];
+let currentPage = 1;
+const rowsPerPage = 5;
+
 // Entry Point
 window.addEventListener('DOMContentLoaded', () => {
   loadUserDashboard();
 });
 
-//  Main dashboard loading logic
+// Main dashboard loading logic
 async function loadUserDashboard() {
   await getProfile();
   await getAllExpenses();
   await handlePremiumFeatures();
 }
 
-// Reusable function to check premium status and perform actions
+// Reusable function to check premium status
 async function isUserPremium(callbackIfYes, callbackIfNo) {
   try {
     const response = await fetch("http://localhost:5000/user/check-premium", {
@@ -48,7 +48,7 @@ async function isUserPremium(callbackIfYes, callbackIfNo) {
   }
 }
 
-//  Fetch user profile and display username
+// Fetch and display username
 async function getProfile() {
   try {
     const response = await fetch('http://localhost:5000/user/me', {
@@ -94,7 +94,7 @@ form.addEventListener('submit', async (e) => {
 
     showToast("Expense added successfully");
     form.reset();
-    getAllExpenses();
+    await getAllExpenses();
 
   } catch (error) {
     console.error("Error adding expense:", error);
@@ -102,7 +102,7 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-//  Fetch and render all expenses
+// Fetch all expenses and initialize pagination
 async function getAllExpenses() {
   try {
     const response = await fetch('http://localhost:5000/expense/all-expenses', {
@@ -116,27 +116,93 @@ async function getAllExpenses() {
       return showToast(data.message || "Error fetching expenses.");
     }
 
-    tableBody.innerHTML = ''; // Clear current rows
-
-    data.forEach((item) => {
-      const row = document.createElement('tr');
-      row.id = `expense-${item.id}`;
-      row.innerHTML = `
-        <td>${item.category}</td>
-        <td>${item.amount}</td>
-        <td>${item.description}</td>
-        <td><button class="delete-btn">Delete</button></td>
-      `;
-      row.querySelector('.delete-btn').addEventListener('click', () => deleteExpense(item.id));
-      tableBody.appendChild(row);
-    });
+    expenses = data;
+    currentPage = 1;
+    renderPaginatedExpenses();
+    renderPaginationControls();
 
   } catch (error) {
     console.error("Error loading expenses:", error);
   }
 }
 
-//  Delete expense
+// Render paginated expenses
+function renderPaginatedExpenses() {
+  tableBody.innerHTML = '';
+
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const currentExpenses = expenses.slice(startIndex, endIndex);
+
+  currentExpenses.forEach((item) => {
+    const row = document.createElement('tr');
+    row.id = `expense-${item.id}`;
+    row.innerHTML = `
+      <td>${item.category}</td>
+      <td>${item.amount}</td>
+      <td>${item.description}</td>
+      <td><button class="delete-btn">Delete</button></td>
+    `;
+    row.querySelector('.delete-btn').addEventListener('click', () => deleteExpense(item.id));
+    tableBody.appendChild(row);
+  });
+}
+
+// Render pagination controls
+function renderPaginationControls() {
+  let paginationContainer = document.getElementById('pagination-controls');
+
+  if (!paginationContainer) {
+    paginationContainer = document.createElement('div');
+    paginationContainer.id = 'pagination-controls';
+    paginationContainer.style.textAlign = 'center';
+    paginationContainer.style.marginTop = '1rem';
+    tableBody.parentElement.appendChild(paginationContainer);
+  }
+
+  paginationContainer.innerHTML = '';
+  const totalPages = Math.ceil(expenses.length / rowsPerPage);
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = 'Prev';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.onclick = () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderPaginatedExpenses();
+      renderPaginationControls();
+    }
+  };
+  paginationContainer.appendChild(prevBtn);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const pageBtn = document.createElement('button');
+    pageBtn.textContent = i;
+    if (i === currentPage) {
+      pageBtn.disabled = true;
+    }
+    pageBtn.onclick = () => {
+      currentPage = i;
+      renderPaginatedExpenses();
+      renderPaginationControls();
+    };
+    paginationContainer.appendChild(pageBtn);
+  }
+
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = 'Next';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.onclick = () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderPaginatedExpenses();
+      renderPaginationControls();
+    }
+  };
+  paginationContainer.appendChild(nextBtn);
+}
+
+// Delete expense
 async function deleteExpense(id) {
   try {
     const response = await fetch(`http://localhost:5000/expense/delete-expense/${id}`, {
@@ -150,7 +216,12 @@ async function deleteExpense(id) {
       return showToast(data.message || "Expense not found.");
     }
 
-    document.getElementById(`expense-${id}`)?.remove();
+    expenses = expenses.filter(exp => exp.id !== id);
+    const maxPages = Math.ceil(expenses.length / rowsPerPage);
+    if (currentPage > maxPages) currentPage = maxPages || 1;
+
+    renderPaginatedExpenses();
+    renderPaginationControls();
     showToast("Expense deleted");
 
   } catch (error) {
@@ -159,12 +230,12 @@ async function deleteExpense(id) {
   }
 }
 
-//  Redirect to membership payment
+// Redirect to membership payment
 membershipBtn.addEventListener('click', () => {
   window.location.href = '/payment';
 });
 
-//  Download expenses (only for premium)
+// Download expenses (only for premium)
 downloadExpenseBtn.addEventListener('click', async () => {
   try {
     const response = await fetch("http://localhost:5000/expense/download", {
@@ -193,12 +264,12 @@ downloadExpenseBtn.addEventListener('click', async () => {
   }
 });
 
-//  Redirect to report page
+// Redirect to report page
 viewReportBtn.addEventListener('click', () => {
   window.location.href = '/expense/report';
 });
 
-// Load leaderboard data
+// Load leaderboard
 async function loadLeaderBoard() {
   try {
     const response = await fetch('http://localhost:5000/user/all-users', {
@@ -228,14 +299,14 @@ async function loadLeaderBoard() {
   }
 }
 
-// Toggle leaderboard visibility
+// Toggle leaderboard
 leaderBoardBtn.addEventListener('click', async () => {
   const hidden = leaderBoardFloating.classList.toggle('hidden');
   leaderBoardBtn.textContent = hidden ? 'Show Leaderboard' : 'Hide Leaderboard';
   if (!hidden) await loadLeaderBoard();
 });
 
-//  Show/hide buttons for premium features
+// Handle premium features
 async function handlePremiumFeatures() {
   isUserPremium(
     () => {
@@ -255,8 +326,7 @@ async function handlePremiumFeatures() {
   );
 }
 
-
-
+// Toast
 function showToast(message, type = "info") {
   const toastContainer = document.getElementById('toast-container');
   const toast = document.createElement('div');
