@@ -8,7 +8,7 @@ form.addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
 
     if (!email || !password) {
-        alert("All fields are required");
+        showToast("All fields are required");
         return;
     }
 
@@ -25,7 +25,7 @@ form.addEventListener('submit', async (e) => {
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.message || "Login failed. Try again!");
+            showToast(data.message || "Login failed. Try again!");
             return;
         }
 
@@ -35,10 +35,28 @@ form.addEventListener('submit', async (e) => {
         window.location.href = "/expense/add-expense"; // adjust path if needed
 
     } catch (err) {
-        alert("Something went wrong");
+        showToast("Something went wrong");
         console.error("Login error:", err);
     }
 });
+
+
+function showToast(message, type = "info") {
+  const toastContainer = document.getElementById("toast-container");
+
+  if (!toastContainer) {
+    console.warn("Toast container not found");
+    return;
+  }
+
+  const toast = document.createElement("div");
+  toast.className = `toast toast-${type}`;
+  toast.textContent = message;
+
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => toast.remove(), 3000);
+}
 
 
 // membershipBtn.addEventListener('click', () => {

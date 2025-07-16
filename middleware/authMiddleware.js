@@ -11,7 +11,7 @@ const verifyToken = async (req, res, next) => {
             return res.status(401).json({error:"Access denied"})
         }
     
-        const decodedMessage = jwt.verify(token, "aamir$jawed$learing$65")
+        const decodedMessage = jwt.verify(token, process.env.SECRET)
     
         const {id} = decodedMessage;
         req.userId = decodedMessage.id;

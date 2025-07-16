@@ -10,47 +10,50 @@
       rel="stylesheet"
     />
   </head>
+
   <body>
     <div class="expense-container">
+
       <!-- Header -->
       <header class="page-header">
         <h1 class="expense-heading">
           <i class="fa-solid fa-wallet"></i> Expense Tracker
         </h1>
-        <button id="buy_membership">
-          <i class="fa-solid fa-crown"></i> Buy Membership
-        </button>
+        <div style="display: flex; gap: 0.75rem;">
+          <button id="buy_membership">
+            <i class="fa-solid fa-crown"></i> Buy Membership
+          </button>
+          <button class="leaderboard-btn">
+            <i class="fa-solid fa-trophy"></i> Show Leaderboard
+          </button>
+        </div>
       </header>
 
+      <!-- Welcome Message -->
       <h2 class="username">
         Welcome, <span id="username">Loading...</span>!
       </h2>
       <p id="premium-tag"></p>
 
-      <!-- Leaderboard -->
-      <div class="leaderboard-wrapper">
-        <button class="leaderboard-btn">
-          <i class="fa-solid fa-trophy"></i> Show Leaderboard
-        </button>
-
-        <div class="leaderboard-floating hidden" id="leaderboard-floating">
-          <table class="leaderboard-table" id="leaderboard-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Total Expense</th>
-              </tr>
-            </thead>
-            <tbody class="leaderboard-body" id="leaderboard-body">
-              <!-- Dynamic rows go here -->
-            </tbody>
-          </table>
-        </div>
+      <!-- Leaderboard Table (Floating) -->
+      <div class="leaderboard-floating hidden" id="leaderboard-floating">
+        <table class="leaderboard-table" id="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Total Expense</th>
+            </tr>
+          </thead>
+          <tbody class="leaderboard-body" id="leaderboard-body">
+            <!-- Dynamic rows go here -->
+          </tbody>
+        </table>
       </div>
 
-      <!-- Body -->
+      <!-- Main Body -->
       <div class="expense-body">
-        <!-- Form Section -->
+
+        <!-- Expense Form Section -->
         <form class="expense-form" id="form">
           <h1 class="heading">
             <i class="fa-solid fa-plus-circle"></i> Add Expense
@@ -60,14 +63,24 @@
             <label for="amount">
               <i class="fa-solid fa-indian-rupee-sign"></i> Amount:
             </label>
-            <input type="number" id="amount" name="amount" placeholder="e.g., 1500" />
+            <input
+              type="number"
+              id="amount"
+              name="amount"
+              placeholder="e.g., 1500"
+            />
           </div>
 
           <div class="form-group">
             <label for="description">
               <i class="fa-solid fa-align-left"></i> Description:
             </label>
-            <input type="text" id="description" name="description" placeholder="e.g., Grocery shopping" />
+            <input
+              type="text"
+              id="description"
+              name="description"
+              placeholder="e.g., Grocery shopping"
+            />
           </div>
 
           <div class="form-group">
@@ -89,7 +102,12 @@
             <label for="note">
               <i class="fa-solid fa-align-left"></i> Note:
             </label>
-            <input type="text" id="note" name="note" placeholder="Add note" />
+            <input
+              type="text"
+              id="note"
+              name="note"
+              placeholder="Add note"
+            />
           </div>
 
           <button type="submit">
@@ -97,13 +115,17 @@
           </button>
         </form>
 
-        <!-- Table Section -->
+        <!-- Expense History Section -->
         <div class="expense-table-wrapper">
-          <!-- Heading and Download Button Row -->
-          <div class="expense-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <!-- Header Row with Buttons -->
+          <div
+            class="expense-header-row"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"
+          >
             <h2 style="color: #1e293b;">
               <i class="fa-solid fa-table-list"></i> Expense History
             </h2>
+
             <div style="display: flex; gap: 0.5rem;">
               <button id="download-expenses" class="download-expenses-btn">
                 <i class="fa-solid fa-download"></i> Download Expenses
@@ -114,6 +136,7 @@
             </div>
           </div>
 
+          <!-- Expense Table -->
           <table id="expense-table" class="expense-table">
             <thead>
               <tr>
@@ -129,16 +152,14 @@
             </tbody>
           </table>
         </div>
+
       </div>
     </div>
 
-
+    <!-- Toast Notifications -->
     <div id="toast-container" class="toast-container"></div>
-
 
     <!-- JavaScript -->
     <script src="/expense/expense.js"></script>
-
-    
   </body>
 </html>

@@ -7,12 +7,17 @@
   font-family: "Inter", sans-serif;
 }
 
+
+
 body {
   background: #f5f7fa;
   color: #1e293b;
   line-height: 1.6;
   height: 100vh;
   overflow-x: hidden;
+}
+.page-header{
+  background-color: linear-gradient(135deg, #cbd5ff, #e2e8f0) !important;
 }
 
 /* Container */

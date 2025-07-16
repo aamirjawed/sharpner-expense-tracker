@@ -28,10 +28,9 @@ document.getElementById("form").addEventListener("submit", async (e) => {
       return;
     }
 
-    showToast("Sign Up successful", "success");
+    showToast("Sign Up successful. Now login", "success");
     e.target.reset(); // Clear 
     
-    window.location.href = '/user/signup'
 
   } catch (err) {
     console.error("Signup error:", err);
