@@ -23,6 +23,8 @@ document.getElementById("renderBtn").addEventListener("click", async () => {
     // Start the checkout process
     await cashfree.checkout(checkoutOptions);
 
+    
+
 
   } catch (err) {
     console.error("Error:", err);

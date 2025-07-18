@@ -37,7 +37,6 @@
         border-radius: 5px;
         cursor: pointer;
       }
-
     </style>
   </head>
   <body>
@@ -46,50 +45,45 @@
     </header>
 
     <div class="card">
-      <h3>Click below to open the checkout page in current tab</p>
+      <h3>Click below to open the checkout page in current tab</h3>
       <button id="renderBtn">Pay Now</button>
 
       <div id="cf_checkout"></div>
     </div>
 
-
     <script src="/cashfree/cashfreeWeb_self.js"></script>
 
-    <script >
+    <script>
       const cashfree = Cashfree({
         mode: "sandbox",
       });
 
-    document.getElementById("renderBtn").addEventListener("click", async () => {
-      try {
-        
-        // Fetch payment session ID from backend
-        const response = await fetch("http://localhost:5000/payment/pay", {
-          method: "POST",
-        });
+      document.getElementById("renderBtn").addEventListener("click", async () => {
+        try {
+          // Fetch payment session ID from backend
+          const response = await fetch("http://localhost:5000/payment/pay", {
+            method: "POST",
+          });
 
-        const data = await response.json();
-        const paymentSessionId = data.paymentSessionId;
-        const orderId = data.orderId;
+          const data = await response.json();
+          const paymentSessionId = data.paymentSessionId;
+          const orderId = data.orderId;
 
-        // Initialize checkout options
-        let checkoutOptions = {
+          // Initialize checkout options
+          let checkoutOptions = {
             paymentSessionId: paymentSessionId,
-          
-          //? Modal payment options
             redirectTarget: "_self",
-        };
+          };
 
-        // Start the checkout process
-        const result = await cashfree.checkout(checkoutOptions);
+          // Start the checkout process
+          await cashfree.checkout(checkoutOptions);
 
-        
-
-      } catch (err) {
-        console.error("Error:", err);
-      }
-    });
+        } catch (err) {
+          console.error("Error:", err);
+        }
+      });
     </script>
+
+
   </body>
 </html>
-

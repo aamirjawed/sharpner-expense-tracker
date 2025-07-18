@@ -3,9 +3,7 @@ const path = require('path')
 const User  = require('../model/userModel')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const Expense = require('../model/expenseModel')
 const sendEmail = require('../services/node-mail')
-const { router } = require('../routes/expenseRoutes')
 const ForgotPassword = require('../model/forgotPasswordModel')
 const { v4: uuidv4 } = require('uuid');
 

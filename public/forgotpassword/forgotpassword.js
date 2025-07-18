@@ -6,7 +6,7 @@ form.addEventListener("submit", async (e) => {
   const email = document.getElementById("forgot-password").value.trim();
 
   if (!email) {
-    alert("Email is required");
+    showToast("Email is required");
     return;
   }
 
@@ -22,13 +22,31 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
 
     if (!response.ok) {
-      alert(data.message || "Something went wrong");
+      showToast(data.message || "Something went wrong");
       return;
     }
 
-    alert(data.message || "Reset link sent successfully!");
+    showToast(data.message || "Reset link sent successfully!");
     form.reset(); 
   } catch (error) {
-    alert("Network or server error: " + error.message);
+    showToast("Network or server error: " + error.message);
   }
 });
+
+
+function showToast(message, type = "info") {
+  const toastContainer = document.getElementById("toast-container");
+
+  if (!toastContainer) {
+    console.warn("Toast container not found");
+    return;
+  }
+
+  const toast = document.createElement("div");
+  toast.className = `toast toast-${type}`;
+  toast.textContent = message;
+
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => toast.remove(), 3000);
+}

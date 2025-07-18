@@ -8,6 +8,8 @@ const db = require('./utils/db-connection')
 const userRoutes  = require('./routes/userRoutes')
 const expenseRoutes = require('./routes/expenseRoutes')
 const paymentRoutes = require('./routes/paymentRoutes')
+const helmet = require('helmet')
+const compression = require('compression')
 const app = express();
 
 const port = process.env.PORT || 3000;
@@ -34,7 +36,8 @@ app.use('/expense', expenseRoutes)
 // payment routes
 app.use('/payment', paymentRoutes)
 
-
+app.use(helmet())
+app.use(compression())
 
 db.sync().then(() => {
   app.listen(port, () => {

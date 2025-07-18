@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const path = require('path')
 
 const verifyToken = async (req, res, next) => {
 
@@ -8,7 +9,7 @@ const verifyToken = async (req, res, next) => {
         const {token} = cookies;
 
         if(!token){
-            return res.status(401).json({error:"Access denied"})
+           return res.sendFile(path.join(__dirname, '../public/login.html'))    
         }
     
         const decodedMessage = jwt.verify(token, process.env.SECRET)

@@ -44,3 +44,20 @@ const form = document.getElementById('reset-form'); // typo fixed from 'reset-fr
       alert('An error occurred while resetting your password');
     }
   });
+
+  function showToast(message, type = "info") {
+  const toastContainer = document.getElementById("toast-container");
+
+  if (!toastContainer) {
+    console.warn("Toast container not found");
+    return;
+  }
+
+  const toast = document.createElement("div");
+  toast.className = `toast toast-${type}`;
+  toast.textContent = message;
+
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => toast.remove(), 3000);
+}

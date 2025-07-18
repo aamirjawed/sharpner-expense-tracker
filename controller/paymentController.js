@@ -78,6 +78,7 @@ exports.getPaymentStatus = async (req, res) => {
     await order.save();
 
     return res.status(200).json({ orderId, status: orderStatus });
+ 
   } catch (error) {
     console.error("Server error fetching payment status:", error.message);
     return res.status(500).json({ message: "Internal Server Error" });

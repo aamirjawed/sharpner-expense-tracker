@@ -15,55 +15,118 @@ body {
   line-height: 1.6;
   height: 100vh;
   overflow-x: hidden;
-}
-.page-header{
-  background-color: linear-gradient(135deg, #cbd5ff, #e2e8f0) !important;
+
 }
 
-/* Container */
-.expense-container {
+.expense-header{
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 2rem;
-  gap: 2rem;
-  width: 100%;
+  align-items: center;
+  text-align: center;
+  justify-content:space-evenly;
+  flex-direction: row;
+  padding: 3rem;
+  background:linear-gradient(135deg, #cbd5ff, #e2e8f0) !important;
 }
 
-/* Header */
 .expense-heading {
   font-size: 2rem;
   font-weight: 500;
   color: #1e293b;
-  margin-left: 0;
+  margin-top: 1.5rem;
+  margin-left: 2rem;
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.expense-heading i {
-  font-size: 2.2rem;
-  color: #3b82f6;
+/* Buy Membership Button */
+#buy_membership {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background-color: #10b981;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
+
+#buy_membership:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+.leaderboard-btn {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background-color: #6366f1;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1rem;
+  position: absolute;
+  top: 0;
+  right: 15rem;
+  margin-top: 1.7rem;
+}
+
+#premium-tag {
+  position: absolute;
+  top: 1.7rem;
+  right: 2rem;
+  font-size: 1rem;
+ padding: 0.4rem 1.2rem;
+  border-radius: 8px;
+  background-color: #10b981;
+  color: #ffffff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+/* Container */
+
+
+/* Header */
+
 
 /* Username */
 .username {
   font-size: 1.2rem;
   font-weight: 500;
   color: #64748b;
+  position: absolute;
+  top: 7rem;
+  margin-left: 2rem;
 }
 
 /* Layout */
 .expense-body {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 2rem;  
   justify-content: center;
   width: 100%;
   max-width: 1200px;
   align-items: flex-start;
   padding: 1rem 0;
-  margin: 0 auto;
+  margin-top: 3rem;
+  margin-left: 10rem;
 }
 
 /* Form */
@@ -87,7 +150,7 @@ body {
 .heading {
   font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: #1f2937;
   display: flex;
   align-items: center;
@@ -177,7 +240,7 @@ body {
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  max-height: 600px;
+  max-height: fit-content;
   transition: box-shadow 0.3s ease;
   /* overflow-x: auto; */
 }
@@ -239,44 +302,11 @@ body {
   transform: scale(1.05);
 }
 
-/* Buy Membership Button */
-#buy_membership {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  background-color: #10b981;
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
 
-#buy_membership:hover {
-  background-color: #059669;
-  transform: translateY(-1px);
-}
 
-#premium-tag {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  background-color: #10b981;
-  color: #ffffff;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
+
+
+
 
 /* Buttons */
 .download-expenses-btn {
@@ -407,21 +437,7 @@ body {
   font-weight: 600;
 }
 
-.leaderboard-btn {
-  font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  background-color: #6366f1;
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: 1rem;
-}
+
 
 .leaderboard-btn:hover {
   background-color: #4f46e5;

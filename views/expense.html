@@ -1,35 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expense Tracker</title>
-    <link rel="stylesheet" href="/expense/expense.css" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      rel="stylesheet"
-    />
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/expense/expense.css" />
+</head>
+<body>
+  <header class="expense-header">
+    <div>
+      <h1 class="expense-heading">Expense Tracker</h1>
+    </div>
+    <div>
+      <button id="buy_membership">Buy Membership</button>
+      <button class="leaderboard-btn">show Leaderboard</button>
+    </div>
+  </header>
 
-  <body>
-    <div class="expense-container">
-
-      <!-- Header -->
-      <header class="page-header">
-        <h1 class="expense-heading">
-          <i class="fa-solid fa-wallet"></i> Expense Tracker
-        </h1>
-        <div style="display: flex; gap: 0.75rem;">
-          <button id="buy_membership">
-            <i class="fa-solid fa-crown"></i> Buy Membership
-          </button>
-          <button class="leaderboard-btn">
-            <i class="fa-solid fa-trophy"></i> Show Leaderboard
-          </button>
-        </div>
-      </header>
-
-      <!-- Welcome Message -->
+  <!-- Welcome Message -->
       <h2 class="username">
         Welcome, <span id="username">Loading...</span>!
       </h2>
@@ -158,8 +146,6 @@
 
     <!-- Toast Notifications -->
     <div id="toast-container" class="toast-container"></div>
-
-    <!-- JavaScript -->
-    <script src="/expense/expense.js"></script>
-  </body>
+  <script src="/expense/expense.js"></script>
+</body>
 </html>
