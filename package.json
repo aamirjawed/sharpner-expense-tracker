@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start":"node  app.js",
-    "dev":"nodemon app.js"
+    "start": "node  app.js",
+    "dev": "nodemon app.js",
+    "build": "npm install"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "description": "",
   "dependencies": {
     "@cashfreepayments/cashfree-sdk": "^0.1.7",
     "bcryptjs": "^3.0.2",
@@ -31,5 +31,15 @@
     "sib-api-v3-sdk": "^8.5.0",
     "tedious": "^18.6.1",
     "uuid": "^11.1.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aamirjawed/sharpner-expense-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aamirjawed/sharpner-expense-tracker/issues"
+  },
+  "homepage": "https://github.com/aamirjawed/sharpner-expense-tracker#readme",
+  "description": ""
 }
