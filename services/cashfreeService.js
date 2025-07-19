@@ -4,7 +4,7 @@ const { Cashfree, CFEnvironment } = require("cashfree-pg");
 const cashfree = new Cashfree(
   CFEnvironment.SANDBOX,
  process.env.APP_ID,
-  process.env.SECRET
+  process.env.SECRET_CASH
 );
 
 // Create Order
