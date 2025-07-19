@@ -14,7 +14,7 @@ const sendEmail = async (receiverEmail, resetLink) => {
     const tranEmailApi = new Sib.TransactionalEmailsApi();
 
     const sender = {
-      email: "aamirjawed682@gmail.com",
+      email: process.env.EMAIL,
       name: "Expense Tracker"
     };
 

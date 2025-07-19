@@ -3,8 +3,8 @@ const { Cashfree, CFEnvironment } = require("cashfree-pg");
 // Use environment variables in production
 const cashfree = new Cashfree(
   CFEnvironment.SANDBOX,
-  "TEST430329ae80e0f32e41a393d78b923034",
-  "TESTaf195616268bd6202eeb3bf8dc458956e7192a85"
+ process.env.APP_ID,
+  process.env.SECRET
 );
 
 // Create Order
