@@ -61,7 +61,7 @@
       document.getElementById("renderBtn").addEventListener("click", async () => {
         try {
           // Fetch payment session ID from backend
-          const response = await fetch("http://localhost:5000/payment/pay", {
+          const response = await fetch(`${process.env.CLIENT_URL}/payment/pay`, {
             method: "POST",
           });
 
