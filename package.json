@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "build": "npm install"
+    "build": "echo 'No build step needed for Node/Express"
   },
   "keywords": [],
   "author": "",
