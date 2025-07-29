@@ -42,7 +42,7 @@ const userLogin = async (req, res) => {
   httpOnly: true,
   secure: false, // Set to true in production (requires HTTPS)
   sameSite: 'Lax',
-  maxAge: 10 * 60 * 1000 // 1 day
+  maxAge: 24*10 * 60 * 1000 // 1 day
 });
 
    res.status(200).json({message:"Login success"})
