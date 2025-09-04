@@ -13,7 +13,7 @@ form.addEventListener('submit', async (e) => {
     }
 
     try {
-        const response = await fetch(`${process.env.CLIENT_URL}/user/login`, {
+        const response = await fetch(`https://expense-tracker-q5t0.onrender.com/user/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
