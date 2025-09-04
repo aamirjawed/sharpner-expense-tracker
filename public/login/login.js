@@ -32,7 +32,7 @@ form.addEventListener('submit', async (e) => {
         
 
         // Redirect after saving the token
-        window.location.href = "/expense/add-expense"; // adjust path if needed
+        window.location.href = "/expense/add-expense";
 
     } catch (err) {
         showToast("Something went wrong");
