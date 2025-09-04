@@ -5,7 +5,7 @@ const cashfree = Cashfree({
 document.getElementById("renderBtn").addEventListener("click", async () => {
   try {
     // Fetch payment session ID from backend
-    const response = await fetch("https://expense-tracker-q5t0.onrender.com/payment-status/payment/pay", {
+    const response = await fetch("https://expense-tracker-q5t0.onrender.com/payment/pay", {
       method: "POST",
     });
 
