@@ -4,12 +4,13 @@ const express = require('express');
 const path = require('path')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-const db = require('./utils/db-connection')
 const userRoutes  = require('./routes/userRoutes')
 const expenseRoutes = require('./routes/expenseRoutes')
 const paymentRoutes = require('./routes/paymentRoutes')
+const premiumRoutes = require('./routes/premiumRoutes')
 const helmet = require('helmet')
-const compression = require('compression')
+const compression = require('compression');
+const connectDb = require('./utils/db-connection');
 const app = express();
 
 const port = process.env.PORT || 3000;
@@ -36,10 +37,12 @@ app.use('/expense', expenseRoutes)
 // payment routes
 app.use('/payment', paymentRoutes)
 
+app.use('/premium', premiumRoutes )
+
 app.use(helmet())
 app.use(compression())
 
-db.sync().then(() => {
+connectDb().then(() => {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
   })

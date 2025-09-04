@@ -1,11 +1,11 @@
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById("name").value.trim();
+  const fullName = document.getElementById("fullName").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  if (!name || !email || !password) {
+  if (!fullName || !email || !password) {
     showToast("All fields are required", "error");
     return;
   }
@@ -16,22 +16,22 @@ document.getElementById("form").addEventListener("submit", async (e) => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ name, email, password })
+      body: JSON.stringify({ fullName, email, password })
     });
+
+    const data = await response.json();
 
     if (!response.ok) {
       const message =
         response.status === 409
           ? "This email already exists"
-          : "Sign up failed. Please try again";
+          : data.message || "Sign up failed. Please try again";
       showToast(message, "error");
       return;
     }
 
-    showToast("Sign Up successful. Now login", "success");
-    e.target.reset(); // Clear 
-    
-
+    showToast(data.message || "Sign Up successful. Now login", "success");
+    e.target.reset();
   } catch (err) {
     console.error("Signup error:", err);
     showToast("Something went wrong. Please try again later.", "error");

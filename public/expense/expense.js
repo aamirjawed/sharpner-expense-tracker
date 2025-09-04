@@ -1,4 +1,3 @@
-
 const form = document.getElementById('form');
 const usernameSpan = document.getElementById('username');
 const tableBody = document.getElementById('expense-table-body');
@@ -41,7 +40,6 @@ async function isUserPremium(callbackIfYes, callbackIfNo) {
     } else {
       callbackIfNo && callbackIfNo();
     }
-
   } catch (error) {
     console.error("Premium check failed:", error);
     callbackIfNo && callbackIfNo();
@@ -57,10 +55,9 @@ async function getProfile() {
     });
 
     const data = await response.json();
-    if (response.ok && data.name) {
-      usernameSpan.textContent = data.name;
+    if (response.ok && data.fullName) {
+      usernameSpan.textContent = data.fullName;
     }
-
   } catch (error) {
     console.error("Error fetching profile:", error);
   }
@@ -73,7 +70,7 @@ form.addEventListener('submit', async (e) => {
   const amount = parseFloat(document.getElementById('amount').value.trim());
   const description = document.getElementById('description').value.trim();
   const category = document.getElementById('category').value;
-  const note = document.getElementById('note').value.trim()
+  const note = document.getElementById('note').value.trim();
 
   if (!amount || !description || !category) {
     return showToast("All fields are required");
@@ -104,6 +101,7 @@ form.addEventListener('submit', async (e) => {
 });
 
 // Fetch all expenses and initialize pagination
+
 async function getAllExpenses() {
   try {
     const response = await fetch('http://localhost:5000/expense/all-expenses', {
@@ -113,11 +111,11 @@ async function getAllExpenses() {
 
     const data = await response.json();
 
-    if (!response.ok) {
+    if (!response.ok || !data.success) {
       return showToast(data.message || "Error fetching expenses.");
     }
 
-    expenses = data;
+    expenses = data.data || []; 
     currentPage = 1;
     renderPaginatedExpenses();
     renderPaginationControls();
@@ -126,6 +124,7 @@ async function getAllExpenses() {
     console.error("Error loading expenses:", error);
   }
 }
+
 
 // Render paginated expenses
 function renderPaginatedExpenses() {
@@ -137,15 +136,15 @@ function renderPaginatedExpenses() {
 
   currentExpenses.forEach((item) => {
     const row = document.createElement('tr');
-    row.id = `expense-${item.id}`;
+    row.id = `expense-${item._id}`;
     row.innerHTML = `
       <td>${item.category}</td>
       <td>${item.amount}</td>
       <td>${item.description}</td>
-      <td>${item.note}</td>
+      <td>${item.note || ""}</td>
       <td><button class="delete-btn">Delete</button></td>
     `;
-    row.querySelector('.delete-btn').addEventListener('click', () => deleteExpense(item.id));
+    row.querySelector('.delete-btn').addEventListener('click', () => deleteExpense(item._id));
     tableBody.appendChild(row);
   });
 }
@@ -218,7 +217,7 @@ async function deleteExpense(id) {
       return showToast(data.message || "Expense not found.");
     }
 
-    expenses = expenses.filter(exp => exp.id !== id);
+    expenses = expenses.filter(exp => exp._id !== id);
     const maxPages = Math.ceil(expenses.length / rowsPerPage);
     if (currentPage > maxPages) currentPage = maxPages || 1;
 
@@ -274,32 +273,46 @@ viewReportBtn.addEventListener('click', () => {
 // Load leaderboard
 async function loadLeaderBoard() {
   try {
-    const response = await fetch('http://localhost:5000/user/all-users', {
+    const response = await fetch('http://localhost:5000/premium/leaderboard', {
       method: "GET",
       credentials: 'include'
     });
 
-    if (!response.ok) {
-      const err = await response.json();
-      return showToast(err.message || "Leaderboard fetch failed");
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      return showToast(result.message || "Leaderboard fetch failed");
     }
 
-    const data = await response.json();
+    const users = result.users || [];
+
+    if (!leaderBoardBody) {
+      return console.error("Leaderboard table body not found");
+    }
+
     leaderBoardBody.innerHTML = '';
 
-    data.forEach(user => {
+    if (users.length === 0) {
+      leaderBoardBody.innerHTML = `<tr><td colspan="3">No users found</td></tr>`;
+      return;
+    }
+
+    users.forEach((user, index) => {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${user.name}</td>
-        <td>${user.total_expense}</td>
+        <td>${index + 1}</td>
+        <td>${user.fullName || "Unknown"}</td>
+        <td>${(user.totalExpense ?? 0).toLocaleString()}</td>
       `;
       leaderBoardBody.appendChild(row);
     });
 
   } catch (error) {
     console.error("Leaderboard error:", error);
+    showToast("Something went wrong while loading leaderboard.");
   }
 }
+
 
 // Toggle leaderboard
 leaderBoardBtn.addEventListener('click', async () => {

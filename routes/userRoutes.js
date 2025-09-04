@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendLoginHTML, sendSignupHTML, userSignup, userLogin, myProfile, premiumOrNot, forgotPasswordPage, forgotPassword, resetPasswordPage, resetPassword } = require('../controller/userController');
+const { sendLoginHTML, sendSignupHTML, userLogin, myProfile, premiumOrNot, forgotPasswordPage, forgotPassword, resetPasswordPage, resetPassword, registerUser } = require('../controller/userController');
 const verifyToken = require('../middleware/authMiddleware');
 const checkPremium = require('../middleware/isPremium');
 const {getUserLeaderboard} = require('../controller/premiumFeatures');
@@ -11,7 +11,7 @@ router.post('/login', userLogin)
 
 
 router.get('/signup', sendSignupHTML)
-router.post('/signup', userSignup)
+router.post('/signup', registerUser)
 
 router.get('/me',verifyToken, myProfile)
 

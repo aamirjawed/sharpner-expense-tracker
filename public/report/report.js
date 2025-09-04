@@ -11,12 +11,17 @@ async function loadExpenses() {
     const result = await response.json();
 
     if (!result.success) {
-      alert('Failed to load data');
+      alert(result.message || 'Failed to load data');
       return;
     }
 
     // Clear old rows
     tableBody.innerHTML = '';
+
+    if (!result.data || result.data.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No expenses found</td></tr>`;
+      return;
+    }
 
     // Insert rows
     result.data.forEach(expense => {
@@ -25,7 +30,7 @@ async function loadExpenses() {
         <td>${expense.date}</td>
         <td>${expense.category}</td>
         <td>${expense.description}</td>
-        <td>${expense.amount}</td>
+        <td>${Number(expense.amount).toLocaleString()}</td>
       `;
       tableBody.appendChild(row);
     });
@@ -34,7 +39,7 @@ async function loadExpenses() {
     const totalRow = document.createElement('tr');
     totalRow.innerHTML = `
       <td colspan="3" style="text-align: right; font-weight: bold;">Total:</td>
-      <td style="font-weight: bold;">${result.totalAmount}</td>
+      <td style="font-weight: bold;">${Number(result.totalAmount).toLocaleString()}</td>
     `;
     tableBody.appendChild(totalRow);
 

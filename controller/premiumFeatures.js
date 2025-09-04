@@ -1,114 +1,108 @@
-
-
 const Expense = require("../model/expenseModel");
-const path = require('path')
 const User = require("../model/userModel");
-const { fn, col, Op } = require('sequelize');
-const sequelize = require("../utils/db-connection");
+const path = require("path");
 
-const getUserLeaderboard  = async (req, res) => {
-  const t = await sequelize.transaction()
+const mongoose = require("mongoose");
+// Leaderboard function
+const getUserLeaderboard = async (req, res) => {
   try {
-    
-    const users = await User.findAll({
-  attributes: ["id", "name", "totalExpense"],
-  transaction: t,  
-});
+    const leaderboard = await Expense.aggregate([
+      {
+        $group: {
+          _id: "$userId", // group by userId
+          totalExpense: { $sum: "$amount" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users", // must match your collection name
+          localField: "_id",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
+      {
+        $project: {
+          _id: 0,
+          fullName: "$user.fullName",
+          email: "$user.email",
+          totalExpense: 1,
+        },
+      },
+      { $sort: { totalExpense: -1 } },
+    ]);
 
-
-    console.log(users)
-
-
-    var userLeaderboardDetails = []
-
-    users.forEach((user) => {
-        userLeaderboardDetails.push({name:user.name, total_expense:user.totalExpense || 0})
-    })
-
-    // console.log(userLeaderboardDetails)
-    userLeaderboardDetails.sort((a,b) => b.total_expense - a.total_expense)
-    await t.commit()
-    res.status(200).json(userLeaderboardDetails)
-    
+    res.status(200).json({ success: true, users: leaderboard });
   } catch (error) {
-    await t.rollback()
-    console.log("Error in premium Features Controllers in get User leader board", error)
-    res.status(500).json({error:"Server error"})
+    console.error("Error in getUserLeaderboard:", error.message);
+    res.status(500).json({ success: false, message: "Server error" });
   }
-}
+};
 
-
-
-// view report - daily, weekly, monthly
-
+// Serve Report Page (HTML)
 const viewReportPage = (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/report.html'))
-}
-
-
+  res.sendFile(path.join(__dirname, "../views/report.html"));
+};
 
 
 
 
 const viewReport = async (req, res) => {
   try {
-    const groupBy = req.query.groupBy || 'day';
-    let format;
+    const groupBy = req.query.groupBy || "day";
 
+    let dateFormat;
     switch (groupBy) {
-      case 'day':
-        format = '%Y-%m-%d';
+      case "day":
+        dateFormat = { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } };
         break;
-      case 'week':
-        format = '%Y-W%u';
+      case "week":
+        dateFormat = { $dateToString: { format: "%G-%V", date: "$createdAt" } }; // ISO week
         break;
-      case 'month':
-        format = '%Y-%m';
+      case "month":
+        dateFormat = { $dateToString: { format: "%Y-%m", date: "$createdAt" } };
         break;
       default:
-        return res.status(400).json({ message: 'Invalid group by value' });
+        return res.status(400).json({ success: false, message: "Invalid groupBy value" });
     }
 
-    const formattedDate = fn('DATE_FORMAT', col('createdAt'), format);
+    const userObjectId = new mongoose.Types.ObjectId(req.userId);
 
-    // 🔹 1. Get individual expenses
-    const expenses = await Expense.findAll({
-      where: { userId: req.userId },
-      attributes: [
-        [formattedDate, 'date'],
-        'category',
-        'description',
-        'amount'
-      ],
-      order: [[col('createdAt'), 'DESC']],
-      raw: true
-    });
+    const expenses = await Expense.aggregate([
+      { $match: { userId: userObjectId } },
+      {
+        $project: {
+          date: dateFormat,
+          category: 1,
+          description: 1,
+          amount: 1,
+          createdAt: 1,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
 
-    // 🔹 2. Get total amount separately
-    const totalResult = await Expense.findOne({
-      where: { userId: req.userId },
-      attributes: [[fn('SUM', col('amount')), 'total']],
-      raw: true
-    });
+    const totalResult = await Expense.aggregate([
+      { $match: { userId: userObjectId } },
+      { $group: { _id: null, total: { $sum: "$amount" } } },
+    ]);
 
-    const totalAmount = parseFloat(totalResult.total) || 0;
+    const totalAmount = totalResult.length > 0 ? totalResult[0].total : 0;
 
     return res.status(200).json({
       success: true,
       data: expenses,
-      totalAmount: totalAmount.toFixed(2)
+      totalAmount: totalAmount.toFixed(2),
     });
   } catch (error) {
-    console.error('Error in viewReport:', error.message);
+    console.error("Error in viewReport:", error.message);
     return res.status(500).json({
       success: false,
-      message: 'Something went wrong'
+      message: "Something went wrong",
     });
   }
 };
 
 
-
-
-
-module.exports = {getUserLeaderboard, viewReport, viewReportPage}
+module.exports = { getUserLeaderboard, viewReport, viewReportPage };
