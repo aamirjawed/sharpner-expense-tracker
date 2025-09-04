@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path')
 const cors = require('cors')
+const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
 const userRoutes  = require('./routes/userRoutes')
 const expenseRoutes = require('./routes/expenseRoutes')
@@ -12,6 +13,10 @@ const helmet = require('helmet')
 const compression = require('compression');
 const connectDb = require('./utils/db-connection');
 const app = express();
+
+dotenv.config({
+  path:'../.env'
+})
 
 const port = process.env.PORT || 3000;
 
