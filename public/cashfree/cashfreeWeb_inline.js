@@ -6,7 +6,7 @@ document.getElementById("renderBtn").addEventListener("click", async () => {
   try {
     
     // Fetch payment session ID from backend
-    const response = await fetch("http://localhost:5000/pay", {
+    const response = await fetch("https://expense-tracker-q5t0.onrender.com/pay", {
       method: "POST",
     });
 
@@ -45,7 +45,7 @@ document.getElementById("renderBtn").addEventListener("click", async () => {
         console.log("Payment has been completed, Check for Payment Status");
         console.log(result.paymentDetails.paymentMessage);
         
-        const response = await fetch(`http://localhost:5000/payment-status/${orderId}`, {
+        const response = await fetch(`https://expense-tracker-q5t0.onrender.com/payment-status/${orderId}`, {
             method: "GET",
           });
           const data = await response.json();

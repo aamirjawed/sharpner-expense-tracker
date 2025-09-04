@@ -3,7 +3,7 @@ async function loadExpenses() {
   const tableBody = document.querySelector('#expenseTable tbody');
 
   try {
-    const response = await fetch(`http://localhost:5000/expense/view-report?groupBy=${groupBy}`, {
+    const response = await fetch(`https://expense-tracker-q5t0.onrender.com/expense/view-report?groupBy=${groupBy}`, {
       method: "GET",
       credentials: 'include'
     });

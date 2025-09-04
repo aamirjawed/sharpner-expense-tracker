@@ -28,7 +28,7 @@ async function loadUserDashboard() {
 // Reusable function to check premium status
 async function isUserPremium(callbackIfYes, callbackIfNo) {
   try {
-    const response = await fetch("http://localhost:5000/user/check-premium", {
+    const response = await fetch("https://expense-tracker-q5t0.onrender.com/user/check-premium", {
       method: "GET",
       credentials: "include"
     });
@@ -49,7 +49,7 @@ async function isUserPremium(callbackIfYes, callbackIfNo) {
 // Fetch and display username
 async function getProfile() {
   try {
-    const response = await fetch('http://localhost:5000/user/me', {
+    const response = await fetch('https://expense-tracker-q5t0.onrender.com/user/me', {
       method: "GET",
       credentials: 'include'
     });
@@ -77,7 +77,7 @@ form.addEventListener('submit', async (e) => {
   }
 
   try {
-    const response = await fetch('http://localhost:5000/expense/add-expense', {
+    const response = await fetch('https://expense-tracker-q5t0.onrender.com/expense/add-expense', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -104,7 +104,7 @@ form.addEventListener('submit', async (e) => {
 
 async function getAllExpenses() {
   try {
-    const response = await fetch('http://localhost:5000/expense/all-expenses', {
+    const response = await fetch('https://expense-tracker-q5t0.onrender.com/expense/all-expenses', {
       method: "GET",
       credentials: 'include'
     });
@@ -206,7 +206,7 @@ function renderPaginationControls() {
 // Delete expense
 async function deleteExpense(id) {
   try {
-    const response = await fetch(`http://localhost:5000/expense/delete-expense/${id}`, {
+    const response = await fetch(`https://expense-tracker-q5t0.onrender.com/expense/delete-expense/${id}`, {
       method: "DELETE",
       credentials: 'include'
     });
@@ -239,7 +239,7 @@ membershipBtn.addEventListener('click', () => {
 // Download expenses (only for premium)
 downloadExpenseBtn.addEventListener('click', async () => {
   try {
-    const response = await fetch("http://localhost:5000/expense/download", {
+    const response = await fetch("https://expense-tracker-q5t0.onrender.com/expense/download", {
       method: "GET",
       credentials: "include",
     });
@@ -273,7 +273,7 @@ viewReportBtn.addEventListener('click', () => {
 // Load leaderboard
 async function loadLeaderBoard() {
   try {
-    const response = await fetch('http://localhost:5000/premium/leaderboard', {
+    const response = await fetch('https://expense-tracker-q5t0.onrender.com/premium/leaderboard', {
       method: "GET",
       credentials: 'include'
     });
