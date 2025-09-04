@@ -9,13 +9,13 @@ const getUserLeaderboard = async (req, res) => {
     const leaderboard = await Expense.aggregate([
       {
         $group: {
-          _id: "$userId", // group by userId
+          _id: "$userId", 
           totalExpense: { $sum: "$amount" },
         },
       },
       {
         $lookup: {
-          from: "users", // must match your collection name
+          from: "users",
           localField: "_id",
           foreignField: "_id",
           as: "user",
@@ -58,7 +58,7 @@ const viewReport = async (req, res) => {
         dateFormat = { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } };
         break;
       case "week":
-        dateFormat = { $dateToString: { format: "%G-%V", date: "$createdAt" } }; // ISO week
+        dateFormat = { $dateToString: { format: "%G-%V", date: "$createdAt" } };
         break;
       case "month":
         dateFormat = { $dateToString: { format: "%Y-%m", date: "$createdAt" } };

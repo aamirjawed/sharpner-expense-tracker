@@ -34,7 +34,7 @@ const form = document.getElementById('reset-form'); // typo fixed from 'reset-fr
 
       if (response.ok) {
         alert('Password reset successful');
-        window.location.href = '/user/login'; // redirect if needed
+        window.location.href = '/user/login';
       } else {
         alert(data || 'Failed to reset password');
       }

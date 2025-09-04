@@ -37,7 +37,7 @@ const userLogin = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // set true in prod
+      secure: false, 
       sameSite: "Lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
@@ -178,7 +178,7 @@ const forgotPassword = async (req, res) => {
       isActive: true,
     });
 
-    const resetLink = `http://localhost:5000/user/password/reset-password/${resetToken}`;
+    const resetLink = `https://expense-tracker-q5t0.onrender.com/payment-status/user/password/reset-password/${resetToken}`;
     await sendEmail(normalizedEmail, resetLink);
 
     return res.status(200).json({ message: "Reset link sent successfully" });

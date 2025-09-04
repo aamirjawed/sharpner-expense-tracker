@@ -5,7 +5,7 @@ const checkPremium = async (req, res, next) => {
     // Find user by ID and select only isPremium field
     const user = await User.findById(req.userId).select("isPremium");
 
-    console.log("User premium status:", user?.isPremium); // debug log
+    console.log("User premium status:", user?.isPremium);
 
     if (!user || user.isPremium !== "Yes") {
       return res.status(403).json({

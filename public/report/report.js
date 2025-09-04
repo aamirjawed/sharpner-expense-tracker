@@ -35,7 +35,7 @@ async function loadExpenses() {
       tableBody.appendChild(row);
     });
 
-    // ✅ Add total expense row at bottom
+    //Add total expense row at bottom
     const totalRow = document.createElement('tr');
     totalRow.innerHTML = `
       <td colspan="3" style="text-align: right; font-weight: bold;">Total:</td>
