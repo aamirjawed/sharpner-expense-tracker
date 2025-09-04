@@ -8,6 +8,7 @@ const premiumTag = document.getElementById('premium-tag');
 const leaderBoardBtn = document.querySelector('.leaderboard-btn');
 const leaderBoardFloating = document.getElementById('leaderboard-floating');
 const leaderBoardBody = document.getElementById('leaderboard-body');
+const logoutBtn = document.querySelector('.logout-user')
 
 let expenses = [];
 let currentPage = 1;
@@ -340,6 +341,31 @@ async function handlePremiumFeatures() {
     }
   );
 }
+
+
+logoutBtn.addEventListener('click', async () => {
+  try {
+    const response = await fetch('https://expense-tracker-q5t0.onrender.com/user/logout', {
+      method:"POST",
+      credentials:'include'
+    })
+
+    const data = await response.json()
+
+    if(!response.ok){
+      return showToast(data.message || "Logout failed")
+    }
+
+    showToast("Logout successfully")
+
+    setTimeout(() => {
+      window.location.href = "/user/login"
+    })
+  } catch (error) {
+    console.error("Logout error:", error);
+    showToast("Something went wrong while logging out", "error");
+  }
+})
 
 // Toast
 function showToast(message, type = "info") {

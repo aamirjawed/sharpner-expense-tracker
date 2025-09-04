@@ -99,10 +99,6 @@ body {
   align-items: center;
   gap: 0.4rem;
 }
-/* Container */
-
-
-/* Header */
 
 
 /* Username */
@@ -113,6 +109,16 @@ body {
   position: absolute;
   top: 7rem;
   margin-left: 2rem;
+}
+
+.logout-user{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border: 1px solid black;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 /* Layout */

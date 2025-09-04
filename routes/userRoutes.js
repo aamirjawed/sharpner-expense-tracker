@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendLoginHTML, sendSignupHTML, userLogin, myProfile, premiumOrNot, forgotPasswordPage, forgotPassword, resetPasswordPage, resetPassword, registerUser } = require('../controller/userController');
+const { sendLoginHTML, sendSignupHTML, userLogin, myProfile, premiumOrNot, forgotPasswordPage, forgotPassword, resetPasswordPage, resetPassword, registerUser, logoutUser } = require('../controller/userController');
 const verifyToken = require('../middleware/authMiddleware');
 const checkPremium = require('../middleware/isPremium');
 const {getUserLeaderboard} = require('../controller/premiumFeatures');
@@ -31,6 +31,8 @@ router.post('/password/forgot-password', forgotPassword)
 router.get(`/password/reset-password/:id`, resetPasswordPage)
 
 router.post('/password/reset-password/:id', resetPassword)
+
+router.post('/logout', verifyToken, logoutUser)
 
 
 module.exports = router
