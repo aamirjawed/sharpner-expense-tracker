@@ -19,7 +19,7 @@ const form = document.getElementById('reset-form'); // typo fixed from 'reset-fr
       const pathParts = window.location.pathname.split('/');
       const token = pathParts[pathParts.length - 1];
 
-      const response = await fetch(`/user/password/reset-password/${token}`, {
+      const response = await fetch(`https://expense-tracker-q5t0.onrender.com/payment-status/user/password/reset-password/${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ const form = document.getElementById('reset-form'); // typo fixed from 'reset-fr
 
       if (response.ok) {
         alert('Password reset successful');
-        window.location.href = '/login'; // redirect if needed
+        window.location.href = '/user/login'; // redirect if needed
       } else {
         alert(data || 'Failed to reset password');
       }

@@ -11,7 +11,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
-    const response = await fetch("http://localhost:5000/user/password/forgot-password", {
+    const response = await fetch("https://expense-tracker-q5t0.onrender.com/payment-status/user/password/forgot-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", 
