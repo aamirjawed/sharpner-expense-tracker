@@ -24,11 +24,11 @@ exports.createOrder = async (
       order_amount: orderAmount,
       order_currency: orderCurrency,
       customer_details: {
-        customer_id: customerID.toString(), // Must be string
+        customer_id: customerID.toString(),
         customer_phone: customerPhone,
       },
       order_meta: {
-        return_url: `http://localhost:5000/payment/payment-status/${orderId}`,
+        return_url: `https://expense-tracker-q5t0.onrender.com/payment-status/payment/payment-status/${orderId}`,
         payment_methods: "ccc, upi, nb",
       },
       order_expiry_time: formattedExpiryDate,
