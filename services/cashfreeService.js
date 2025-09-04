@@ -28,7 +28,7 @@ exports.createOrder = async (
         customer_phone: customerPhone,
       },
       order_meta: {
-        return_url: `https://expense-tracker-q5t0.onrender.com/payment-status/payment/payment-status/${orderId}`,
+        return_url: `https://expense-tracker-q5t0.onrender.com/payment/payment-status/${orderId}`,
         payment_methods: "ccc, upi, nb",
       },
       order_expiry_time: formattedExpiryDate,
